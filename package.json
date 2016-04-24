@@ -1,0 +1,27 @@
+{
+  "name": "genes",
+  "version": "1.0.0",
+  "description": "genes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siualpinto/PP-Genes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/siualpinto/PP-Genes/issues"
+  },
+  "homepage": "https://github.com/siualpinto/PP-Genes#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "bootstrap": "^3.3.6",
+    "connect-flash": "^0.1.1",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0"
+  }
+}
