@@ -1,41 +1,36 @@
-/*Settings*/
-var express = require('express');
-var app = express();
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var app = express();
-app.use(session({secret: 'qvqewdxwxqeq4swrts', resave: false, saveUninitialized: false}));
+var express  = require('express');
+var app      = express();                               // create our app w/ express
+var mongoose = require('mongoose');                     // mongoose for mongodb
+var morgan = require('morgan');             // log requests to the console (express4)
+var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
 
-//body-parser - This is a node.js middleware for handling JSON, Raw, Text and URL encoded form data.
-var urlencodedParser = bodyParser.urlencoded({ extended: false }); 
+var path = require('path');
+var request = require('request');
 
-app.use(express.static('public'));
-app.set('view engine', 'ejs');//ejs = Embedded JavaScript templates tipo php
-app.set('views',__dirname+'/views');
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-//serve para mostrar mensagens ex.:req.flash('message', "Wrong password");
-var flash = require('connect-flash');
-app.use(flash());
+app.use('/', routes);
+app.use('/users', users);
 
-/*Settings end*/
 
-/*Server*/
-var port = Number(process.env.PORT || 3000);
-var server = app.listen(port, function () {
+/*app.get('/api/teste', function(req, res) {
 
-	var host = server.address().address
-	var port = server.address().port
-
-	console.log("App listening at http://%s:%s", host, port)
-
-});
-
-function sendHTML(res, file, data){
-	res.render(__dirname + "/public/views/"+ file, data);	
-}
-
+ 
+    request('http://rest.kegg.jp/info/genes', function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log(body); // Print the google web page.
+     }
+})
+});*/
 
 app.get('/', function (req, res) {
-       sendHTML(res, "index");
+       res.render('teste.html');
 })
 
+// listen (start app with node server.js) ======================================
+app.listen(8080);
+console.log("App listening on port 8080");
