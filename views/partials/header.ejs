@@ -1,0 +1,40 @@
+<link rel="stylesheet" href="/styles/bootstrap.css">
+<script src="/scripts/jquery-1.10.2.js"></script>
+<script src="/scripts/bootstrap.js"></script>
+
+<script src="/scripts/header.js"></script>
+
+<nav class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <!-- add header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Genes</a>
+        </div>
+        <!-- add menu -->
+        <div class="collapse navbar-collapse" id="navbar1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="/profile">My Profile</a></li>
+                <li><a href="/FAQ">FAQ</a></li>
+            </ul>
+
+            <!-- add search form -->
+            <form class="navbar-form navbar-right" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for genes">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</nav>
