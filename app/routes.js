@@ -1,4 +1,4 @@
-module.exports = function(app, passport) {
+module.exports = function(app, passport,http) {
 
     // =====================================
     // HOME PAGE (with login links) ========
@@ -51,6 +51,71 @@ module.exports = function(app, passport) {
         res.render('profile.ejs', {
             user : req.user // get the user out of session and pass to template
         });
+    });
+
+    app.post('/search', function(req, res) {
+
+            var options = {
+              host: 'rest.kegg.jp',
+              path: '/get/hsa:' + req.body.search,
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+
+                    data = data.replace(/(\r\n|\n|\r)/gm,"");             
+
+                    var one = data.match("ENTRY(.*)NAME");
+                    var two = data.match("NAME(.*)DEFINITION");
+                    var three = data.match("DEFINITION(.*)ORGANISM");
+                    var four = data.match("ORGANISM(.*)POSITION");
+                    var five = data.match("POSITION(.*)MOTIF");
+                    var six = data.match("MOTIF(.*)DBLINKS");
+                    var seven = data.match("DBLINKS(.*)AASEQ");
+                    var eight = data.match("AASEQ(.*)NTSEQ");
+                    var nine = data.match("NTSEQ(.*)///");
+
+                    var output = {
+                    entry:one[1],
+                    name:two[1], 
+                    definition:three[1], 
+                    organism:four[1],
+                    position:five[1],
+                    motif:six[1],
+                    dblinks:seven[1],
+                    aaseq:eight[1],
+                    ntseq:nine[1]
+                    };
+
+                    console.log(output);
+
+                    //console.log(json);
+                     res.render('search.ejs', {
+
+                    gene : output // get the user out of session and pass to template
+                });
+
+        }); 
+
+
+    }); 
     });
 
     // =====================================
