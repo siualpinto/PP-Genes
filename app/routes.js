@@ -53,11 +53,58 @@ module.exports = function(app, passport,http) {
         });
     });
 
+
+    app.get('/general', function(req, res) {
+
+        var options = {
+              host: 'rest.kegg.jp',
+              path: '/list/organism',
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+
+
+                    //console.log(data);          
+
+                    var result = data.split("\n");
+                    var one = JSON.parse(JSON.stringify(result[0].split("\t")));
+    
+                    console.log('one'+ one[3].split(";")[0]);
+
+                    //console.log(json);
+                     res.render('general.ejs', {
+                        data : result
+                });
+
+            }); 
+
+
+        }); 
+    });
+
     app.post('/search', function(req, res) {
 
             var options = {
               host: 'rest.kegg.jp',
-              path: '/get/hsa:' + req.body.search,
+              path: '/get/' + req.body.species + ':' + req.body.search,
               headers: {
                     'Content-Type': 'application/json'
                 }
@@ -112,10 +159,10 @@ module.exports = function(app, passport,http) {
                     gene : output // get the user out of session and pass to template
                 });
 
+            }); 
+
+
         }); 
-
-
-    }); 
     });
 
     // =====================================

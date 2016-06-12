@@ -4,6 +4,7 @@
 
 <script src="/scripts/header.js"></script>
 
+<title>Gene Search Tool</title>
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="container-fluid">
         <!-- add header -->
@@ -20,11 +21,19 @@
         <div class="collapse navbar-collapse" id="navbar1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Home</a></li>
+                <li><a href="/general">Organisms</a></li>
                 <li><a href="/profile">My Profile</a></li>
+                <li><a href="/profile">My Work</a></li>
             </ul>
 
             <!-- add search form -->
             <form action="/search" method="post" class="navbar-form navbar-right">
+                <select name="species">
+                    <option value="hsa" selected>Human</option>
+                    <option value="ptr">Chimpanzee </option>
+                    <option value="pps">Bonobo</option>
+                    <option value="ggo">Western Gorilla</option>
+                </select>
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Search for genes">
                     <span class="input-group-btn">
