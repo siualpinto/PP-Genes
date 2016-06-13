@@ -15,47 +15,20 @@
 <table id="organisms" class="table table-striped" width="100%">
         <thead>
             <tr>
-                <th>Taxonomy</th>
-                <th>Tipology</th>
-                <th>Species</th>
-                <th>Taxon</th>
-                <th>Domains</th>
-                <th>Subphylum</th>
-                <th>Class</th>
                 <th>Pathway</th>
+                <th>Information</th>
             </tr>
         </thead>
         <tbody>
         <% for(var i=0; i < data.length-1; i++) { %>
-        <% var j = JSON.parse(JSON.stringify(data[i].split("\t")))[3]; %>
            <tr>
              <td>
+                <a href="#" class="teste">
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[0] %>
-             </td>
-             <td>
-                <a href="#" class="typology">
-               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
                 </a>
              </td>
              <td>
-               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[2] %>
-             </td>
-             <td>
-                <%= j.split(";")[0] %>
-             </td>
-             <td>
-               <%= j.split(";")[1] %>
-             </td>
-             <td>
-               <%= j.split(";")[2] %>
-             </td>
-             <td>
-               <%= j.split(";")[3] %>
-             </td>
-              <td>
-               <a href="#" class="pathway">
-               See Pathway
-               </a>
+               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
              </td>
            </tr>
         <% } %>
@@ -68,13 +41,11 @@
 $(document).ready(function() {
     $('#organisms').DataTable();
 
-    var x = document.getElementsByClassName("typology");
-    var y = document.getElementsByClassName("pathway");
-
+    var x = document.getElementsByClassName("teste");
     var i;
     for (i = 0; i < x.length; i++) {
-        x[i].href = '/specific/:' + x[i].innerText;
-        y[i].href = '/pathway/:' + x[i].innerText;
+        var params = x[i].innerText.split(":");
+        x[i].href = '/search/:' + params[0] + "/:" + params[1];
     }
 
 } );

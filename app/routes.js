@@ -89,7 +89,6 @@ module.exports = function(app, passport,http) {
     
                     console.log('one'+ one[3].split(";")[0]);
 
-                    //console.log(json);
                      res.render('general.ejs', {
                         data : result
                 });
@@ -99,6 +98,194 @@ module.exports = function(app, passport,http) {
 
         }); 
     });
+
+    app.get('/specific/:tipology', function(req, res) {
+
+         var tipology = req.params.tipology;
+         var trya = tipology.split(":");
+         console.log(trya[1]);
+
+            var options = {
+              host: 'rest.kegg.jp',
+              path: '/list/' + trya[1],
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+
+                    //console.log(data);          
+
+                    var result = data.split("\n");
+                    //console.log(json);
+                     res.render('individual.ejs', {
+                        data : result
+                });
+
+            }); 
+
+
+        }); 
+    });
+
+    app.get('/pathway/:tipology', function(req, res) {
+
+         var tipology = req.params.tipology;
+         var trya = tipology.split(":");
+         console.log(trya[1]);
+
+            var options = {
+              host: 'rest.kegg.jp',
+              path: '/list/pathway/' + trya[1],
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+
+                    //console.log(data);          
+
+                    var result = data.split("\n");
+                    //console.log(json);
+                     res.render('pathway.ejs', {
+                        data : result
+                });
+
+            }); 
+
+
+        }); 
+    });
+
+
+    app.get('/search/:params/:params2', function(req, res) {
+            
+
+        var params = req.params.params;
+        var params2 = req.params.params2;
+        console.log(params + params2);
+        if (params == null || params2 == null){
+            
+
+        }
+
+
+         var first = params.split(":");
+         var second = params2.split(":");
+
+
+        var options = {
+              host: 'rest.kegg.jp',
+              path: '/get/' + first[1] + ":" + second[1],
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+           
+                    data = data.replace(/(\r\n|\n|\r)/gm,"");
+
+                    var one = data.match("ENTRY(.*)NAME");
+                    var two = data.match("NAME(.*)DEFINITION");
+                    var three = data.match("DEFINITION(.*)ORGANISM");
+                    var four = data.match("ORGANISM(.*)POSITION");
+                    var five = data.match("POSITION(.*)MOTIF");
+                    var six = data.match("MOTIF(.*)DBLINKS");
+                    var seven = data.match("DBLINKS(.*)AASEQ");
+                    var eight = data.match("AASEQ(.*)NTSEQ");
+                    var nine = data.match("NTSEQ(.*)///");
+
+                    var output = {}; 
+                    if(one != null){
+                    output.entry = one[1];
+                    }
+                    if(two != null){
+                    output.name=two[1];
+                    }
+                    if(three != null){
+                    output.definition=three[1];
+                    }
+                    if(four != null){
+                    output.organism=four[1];
+                    }
+                    if(five != null){
+                    output.position=five[1];
+                    }
+                    if(six != null){
+                    output.motif=six[1];
+                    }
+                    if(seven != null){
+                    output.dblinks=seven[1];
+                    } 
+                    if(eight != null){
+                    output.aaseq=eight[1];
+                    } 
+                    if(nine != null){
+                    output.ntseq=nine[1];
+                    } 
+
+                    console.log(output);
+
+                    //console.log(json);
+                     res.render('search.ejs', {
+
+                    gene : output // get the user out of session and pass to template
+                });
+
+            }); 
+
+
+        }); 
+
+     });
 
     app.post('/search', function(req, res) {
 
@@ -163,6 +350,10 @@ module.exports = function(app, passport,http) {
 
 
         }); 
+    });
+
+    app.get('/asearch', function(req, res) {
+        res.render('asearch.ejs'); // load the index.ejs file
     });
 
     // =====================================
