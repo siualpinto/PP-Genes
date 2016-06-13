@@ -1,0 +1,53 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+</head>
+<body>
+<%- include /partials/header.ejs %>
+<table id="organisms" class="table table-striped" width="100%">
+        <thead>
+            <tr>
+                <th>Pathway</th>
+                <th>Information</th>
+            </tr>
+        </thead>
+        <tbody>
+        <% for(var i=0; i < data.length-1; i++) { %>
+           <tr>
+             <td>
+                <a href="#" class="teste">
+               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[0] %>
+                </a>
+             </td>
+             <td>
+               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
+             </td>
+           </tr>
+        <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
+
+<script>
+$(document).ready(function() {
+    $('#organisms').DataTable();
+
+    var x = document.getElementsByClassName("teste");
+    var i;
+    for (i = 0; i < x.length; i++) {
+        var params = x[i].innerText.split(":");
+        x[i].href = '/search/:' + params[0] + "/:" + params[1];
+    }
+
+} );
+
+</script>

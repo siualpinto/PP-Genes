@@ -289,6 +289,8 @@ module.exports = function(app, passport,http) {
 
     app.post('/search', function(req, res) {
 
+            if(req.body.species != null || req.body.search != null){
+
             var options = {
               host: 'rest.kegg.jp',
               path: '/get/' + req.body.species + ':' + req.body.search,
@@ -349,7 +351,56 @@ module.exports = function(app, passport,http) {
             }); 
 
 
+        });
+
+        }
+        else{
+
+            console.log(JSON.stringify(req.body.keyword));
+            var xyz = req.body.keyword.replace(/ /g,"%20");
+            var options = {
+              host: 'rest.kegg.jp',
+              path: '/find/genes/'+JSON.stringify(xyz),
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+             var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+
+
+                    //console.log(data);          
+
+                    var result = data.split("\n");
+                    var one = JSON.parse(JSON.stringify(result[0].split("\t")));
+
+                     res.render('geneslist.ejs', {
+                        data : result
+                });
+
+            }); 
+
+
         }); 
+
+
+
+        } 
     });
 
     app.get('/asearch', function(req, res) {

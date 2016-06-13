@@ -9,37 +9,61 @@
     <script src="/scripts/asearch.js"></script>
 
 </head>
+<style>
+body
+{
+    font-family:Gill Sans MT;
+    text-align: center;
+
+}
+
+input.fieldname
+{
+    clear:left;
+    display:block;
+    display: inline-block;
+    width:25%;
+    margin:10px;
+    margin-bottom:10px;
+}
+select.fieldtype
+{
+    display:block;
+    display: inline-block;
+    width:10%;
+    text-align: center;
+    margin:10px;
+    margin-bottom:10px;
+}
+input.remove
+{
+    display:block;
+    display: inline-block;
+    margin:10px;
+}
+
+
+</style>
 <body>
 <%- include /partials/header.ejs %>
 <div class="container" style="padding-top:80px; word-wrap:break-word;">
     <div class="row">
 
         <!-- LOCAL INFORMATION -->
-        <div class="col-sm-12">
             <div class="well">
-                <h3 class="text-center"><span class="fa fa-info"></span> Advanced Search by ID </h3>
+                <h3 ><span class="fa fa-info"></span> Advanced Search by ID </h3>
 
                     <div class="container">
                         <div class="row">
-                            <div class="control-group col-xs-12" id="fields">
+                            <div class="control-group" id="fields">
                                 <label class="control-label" for="field1">Insert Gene ID</label>
                                 <div class="controls"> 
-                                    <form role="form" autocomplete="off">
+                                    <form action="/search" method="post" role="form" autocomplete="off">
 
-                                        <div class="entry input-group col-xs-4" style="margin-top:8px;">
-                                            <input class="form-control" name="fields[]" type="text" placeholder="Type something"/>
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-success btn-add" type="button">
-                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                </button>
-                                            </span>
-                                             <select class="form-control">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                          </select>
-                                        </div>
+                                        <fieldset id="buildyourform">
+                                        </fieldset>
+                                        <input type="button" value="Add a Gene ID" class="add btn-default" id="add" />
+                                        <input type="submit" value="Search!" class="add btn-default" id="add" />
                                     </form>
                                 <br>
                                 </div>
@@ -48,7 +72,6 @@
                     </div>
 
             </div>
-        </div>
 
     </div>
 

@@ -1,23 +1,16 @@
-    $(function()
-{
-    $(document).on('click', '.btn-add', function(e)
-    {
-        e.preventDefault();
-
-        var controlForm = $('.controls form:first'),
-            currentEntry = $(this).parents('.entry:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
-
-        newEntry.find('input').val('');
-        controlForm.find('.entry:not(:last) .btn-add')
-            .removeClass('btn-add').addClass('btn-remove')
-            .removeClass('btn-success').addClass('btn-danger')
-            .html('<span class="glyphicon glyphicon-minus"></span>');
-    }).on('click', '.btn-remove', function(e)
-    {
-        $(this).parents('.entry:first').remove();
-
-        e.preventDefault();
-        return false;
+$(document).ready(function() {
+    $("#add").click(function() {
+        var intId = $("#buildyourform div").length + 1;
+        var fieldWrapper = $("<div class=\"fieldwrapper\" id=\"field" + intId + "\"/>");
+        var fName = $("<input type=\"text\" class=\"form-control fieldname\" />");
+        var fType = $("<select class=\"form-control fieldtype\"><option value=\"checkbox\">Checked</option><option value=\"textbox\">Text</option><option value=\"textarea\">Paragraph</option></select>");
+        var removeButton = $("<input type=\"button\" class=\"remove\" value=\"-\" />");
+        removeButton.click(function() {
+            $(this).parent().remove();
+        });
+        fieldWrapper.append(fName);
+        fieldWrapper.append(fType);
+        fieldWrapper.append(removeButton);
+        $("#buildyourform").append(fieldWrapper);
     });
 });
