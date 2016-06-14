@@ -67,16 +67,15 @@
 <script>
 $(document).ready(function() {
     $('#organisms').DataTable();
-
-    var x = document.getElementsByClassName("typology");
-    var y = document.getElementsByClassName("pathway");
-
-    var i;
-    for (i = 0; i < x.length; i++) {
-        x[i].href = '/specific/:' + x[i].innerText;
-        y[i].href = '/pathway/:' + x[i].innerText;
-    }
-
 } );
+
+var x = document.getElementsByClassName("typology");
+var y = document.getElementsByClassName("pathway");
+
+var i;
+for (i = 0; i < x.length; i++) {
+    x[i].href = '/specific/:' + x[i].innerText;
+    y[i].href = '/pathway/:' + x[i].innerText;
+}
 
 </script>

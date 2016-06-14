@@ -451,17 +451,17 @@ module.exports = function(app, passport,http) {
                     }
 
                     data = data.replace(/(\r\n|\n|\r)/gm,"");             
-
-                    var one = data.match("ENTRY(.*)NAME");
-                    var two = data.match("NAME(.*)DEFINITION");
-                    var three = data.match("DEFINITION(.*)ORGANISM");
-                    var four = data.match("ORGANISM(.*)POSITION");
-                    var five = data.match("POSITION(.*)MOTIF");
-                    var six = data.match("MOTIF(.*)DBLINKS");
-                    var seven = data.match("DBLINKS(.*)AASEQ");
-                    var eight = data.match("AASEQ(.*)NTSEQ");
-                    var nine = data.match("NTSEQ(.*)///");
-
+                    console.log(data);
+                    var one = data.match("ENTRY(.+)NAME");
+                    var two = data.match("NAME(.+)DEFINITION");
+                    var three = data.match("DEFINITION(.+)ORGANISM");
+                    var four = data.match("ORGANISM(.+)POSITION");
+                    var five = data.match("POSITION(.+)MOTIF");
+                    var six = data.match("MOTIF(.+)DBLINKS");
+                    var seven = data.match("DBLINKS(.+)AASEQ");
+                    var eight = data.match("AASEQ(.+)NTSEQ");
+                    var nine = data.match("NTSEQ(.+)///");
+                    
                     var output = {
                     entry:one[1],
                     name:two[1], 
@@ -474,7 +474,7 @@ module.exports = function(app, passport,http) {
                     ntseq:nine[1]
                     };
 
-                    console.log(output);
+                    //console.log(output);
 
                     //console.log(json);
                      res.render('search.ejs', {

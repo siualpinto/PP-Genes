@@ -23,7 +23,7 @@
         <% for(var i=0; i < data.length-1; i++) { %>
            <tr>
              <td>
-                <a href="#" class="teste">
+                <a href="#" class="idpath">
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[0] %>
                 </a>
              </td>
@@ -41,13 +41,13 @@
 $(document).ready(function() {
     $('#organisms').DataTable();
 
-    var x = document.getElementsByClassName("teste");
+} );
+
+var x = document.getElementsByClassName("idpath");
     var i;
     for (i = 0; i < x.length; i++) {
         var params = x[i].innerText.split(":");
         x[i].href = '/search/:' + params[0] + "/:" + params[1];
     }
-
-} );
 
 </script>
