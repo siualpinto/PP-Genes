@@ -57,16 +57,25 @@ input.remove
                         <div class="row">
                             <div class="control-group" id="fields">
                                 <label class="control-label" for="field1">Insert Gene ID</label>
-                                <div class="controls"> 
-                                    <form action="/search" method="post" role="form" autocomplete="off">
-
-                                        <fieldset id="buildyourform">
-                                        </fieldset>
-                                        <input type="button" value="Add a Gene ID" class="add btn-default" id="add" />
-                                        <input type="submit" value="Search!" class="add btn-default" id="add" />
-                                    </form>
-                                <br>
+                                <form action="/asearch" method="post">
+                                <div class="Search-row form-inline">
+                                    <label>Species:
+                                        <select name="species[]" required">
+                                            <% for(var i=0; i < data.length-1; i++) { %>
+                                            <option value="<%= data[i].fullname %>">
+                                            <%= data[i].fullname %> - <%= data[i].sigla %>
+                                            </option>
+                                            <% } %>
+                                        </select>
+                                    </label>
+                                    <label>Gene ID:
+                                        <input type="text" name="genes[]" required/>
+                                    </label>
                                 </div>
+
+                                <input type="button" id="add-row" name="add-row" value="Add row" />
+                                <input type="submit" id="submit-search" name="submit-search" value="Submit Search" />
+                                </form>
                             </div>
                         </div>
                     </div>
