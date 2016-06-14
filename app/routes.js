@@ -450,37 +450,75 @@ module.exports = function(app, passport,http) {
                         return;
                     }
 
-                    data = data.replace(/(\r\n|\n|\r)/gm,"");             
-                    console.log(data);
-                    var one = data.match("ENTRY(.+)NAME");
-                    var two = data.match("NAME(.+)DEFINITION");
-                    var three = data.match("DEFINITION(.+)ORGANISM");
-                    var four = data.match("ORGANISM(.+)POSITION");
-                    var five = data.match("POSITION(.+)MOTIF");
-                    var six = data.match("MOTIF(.+)DBLINKS");
-                    var seven = data.match("DBLINKS(.+)AASEQ");
-                    var eight = data.match("AASEQ(.+)NTSEQ");
-                    var nine = data.match("NTSEQ(.+)///");
-                    
+                    var regex = /ENTRY/gi, result, Entryindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Entryindices.push(result.index);
+                    }
+                    var regex = /NAME/gi, result, Nameindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Nameindices.push(result.index);
+                    }
+                    var regex = /DEFINITION/gi, result, Definiindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Definiindices.push(result.index);
+                    }
+                    var regex = /ORGANISM/gi, result, Orgaindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Orgaindices.push(result.index);
+                    }
+                    var regex = /POSITION/gi, result, Posiindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Posiindices.push(result.index);
+                    }
+                    var regex = /MOTIF/gi, result, Motifindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Motifindices.push(result.index);
+                    }
+                    var regex = /DBLINKS/gi, result, DBlinksindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        DBlinksindices.push(result.index);
+                    }
+                    var regex = /AASEQ/gi, result, AASEQindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        AASEQindices.push(result.index);
+                    }
+                    var regex = /NTSEQ/gi, result, NTSEQindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        NTSEQindices.push(result.index);
+                    };
+                    var regex = /\/\/\//ig, result, Slashindices = [];
+                    while ( (result = regex.exec(data)) ) {
+                        Slashindices.push(result.index);
+                    }
+
                     var output = {
-                    entry:one[1],
-                    name:two[1], 
-                    definition:three[1], 
-                    organism:four[1],
-                    position:five[1],
-                    motif:six[1],
-                    dblinks:seven[1],
-                    aaseq:eight[1],
-                    ntseq:nine[1]
+                        entry:'',
+                        name:'',
+                        definition:'',
+                        organism:'',
+                        position:'',
+                        motif:'',
+                        dblinks:'',
+                        aaseq:'',
+                        ntseq:''
                     };
 
-                    //console.log(output);
+                    for(var k=0; k<Entryindices.length;k++){
+                        output.entry += data.substring(Entryindices[k]+5,Nameindices[k]-1)+";";
+                        output.name += data.substring(Nameindices[k]+4,Definiindices[k]-1)+";";
+                        output.definition += data.substring(Definiindices[k]+10,Orgaindices[k]-1)+";";
+                        output.organism += data.substring(Orgaindices[k]+8,Posiindices[k]-1)+";";
+                        output.position += data.substring(Posiindices[k]+8,Motifindices[k]-1)+";";
+                        output.motif += data.substring(Motifindices[k]+5,DBlinksindices[k]-1)+";";
+                        output.dblinks += data.substring(DBlinksindices[k]+7,AASEQindices[k]-1)+";";
+                        output.aaseq += data.substring(AASEQindices[k]+5,NTSEQindices[k]-1)+";";                      
+                        output.ntseq += data.substring(NTSEQindices[k]+5,Slashindices[k]-1)+";";
+                    }
 
-                    //console.log(json);
                      res.render('search.ejs', {
-
-                    gene : output // get the user out of session and pass to template
-                });
+                        gene : output,
+                        number : k
+                    });
 
             }); 
 

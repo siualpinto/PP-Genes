@@ -4,18 +4,54 @@
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="/scripts/toprolog.js"></script>
 </head>
 <body>
 <%- include /partials/header.ejs %>
 <div class="container" style="padding-top:80px; word-wrap:break-word;">
     <div class="row">
 
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-12">
-            <div class="well">
-                <h3 class="text-center"><span class="fa fa-info"></span> Gene Information </h3>
-
-                    <p> 
+                    <%if (typeof number != 'undefined') { %> 
+                    <% for(var i=0; i < number; i++) { %>
+                    <div class="col-sm-<%= 12/number %> content">
+                    <h3 class="text-center"><span class="fa fa-info"></span> Gene Information </h3>
+                    <p>
+                        <%if (gene.entry != null) { %>
+                            <strong>Entry</strong>: <%= gene.entry.split(";")[i] %><br>
+                        <% } %>
+                         <%if (gene.name != null) { %>
+                            <strong>Name</strong>: <%= gene.name %><br>
+                        <% } %>
+                        <%if (gene.definition != null) { %>
+                            <strong>Definition</strong>: <%= gene.definition.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.organism != null) { %>
+                            <strong>Organism</strong>: <%= gene.organism.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.position != null) { %>
+                            <strong>Position</strong>: <%= gene.position.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.motif != null) { %>
+                            <strong>Motif</strong>: <%= gene.motif.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.dblinks != null) { %>
+                            <strong>DBlinks</strong>: <%= gene.dblinks.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.aaseq != null) { %>
+                            <strong>AAseq</strong>: <%= gene.aaseq.split(";")[i] %><br>
+                        <% } %>
+                        <%if (gene.ntseq != null) { %>
+                            <strong>NTseq</strong>: <%= gene.ntseq.split(";")[i] %><br>
+                        <% } %>
+                         </p>
+                         </div>
+                        <% } %>
+                   
+                     <% } else{%>
+                    <div class="col-sm-12">
+                    <h3 class="text-center"><span class="fa fa-info"></span> Gene Information </h3>
+                    <p>
                         <%if (gene.entry != null) { %>
                             <strong>Entry</strong>: <%= gene.entry %><br>
                         <% } %>
@@ -44,12 +80,10 @@
                             <strong>NTseq</strong>: <%= gene.ntseq %><br>
                         <% } %>
                     </p>
-
-            </div>
-        </div>
+                    </div>
+                     <% } %>
 
     </div>
-
 </div>
 </body>
 </html>
