@@ -26,6 +26,15 @@
                         <%if (gene.definition != null) { %>
                             <strong>Definition</strong>: <%= gene.definition.split(";")[i] %><br>
                         <% } %>
+                         <%if (gene.orthology != null) { %>
+                            <strong>Aorthology</strong>: <%= gene.orthology.split(";")[i] %><br>
+                        <% } %>
+                         <%if (gene.taxonomy != null) { %>
+                            <strong>Taxonomy</strong>: <%= gene.taxonomy.split(";")[i] %><br>
+                        <% } %>
+                         <%if (gene.lineage != null) { %>
+                            <strong>Lineage</strong>: <%= gene.lineage.split(";")[i] %><br>
+                        <% } %>
                         <%if (gene.organism != null) { %>
                             <strong>Organism</strong>: <%= gene.organism.split(";")[i] %><br>
                         <% } %>

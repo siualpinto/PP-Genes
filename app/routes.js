@@ -299,24 +299,30 @@ module.exports = function(app, passport,http) {
 
                     var one = data.match("ENTRY(.*)NAME");
                     var two = data.match("NAME(.*)DEFINITION");
-                    var three = data.match("DEFINITION(.*)ORGANISM");
-                    var four = data.match("ORGANISM(.*)POSITION");
-                    var five = data.match("POSITION(.*)MOTIF");
-                    var six = data.match("MOTIF(.*)DBLINKS");
-                    var seven = data.match("DBLINKS(.*)AASEQ");
-                    var eight = data.match("AASEQ(.*)NTSEQ");
-                    var nine = data.match("NTSEQ(.*)///");
+                    var three = data.match("DEFINITION(.*)AORTHOLOGY");
+                    var four = data.match("AORTHOLOGY(.*)TAXONOMY");
+                    var five = data.match("TAXONOMY(.*)LINEAGE");
+                    var six = data.match("LINEAGE(.*)ORGANISM");
+                    var seven = data.match("ORGANISM(.*)POSITION");
+                    var eight = data.match("POSITION(.*)MOTIF");
+                    var nine = data.match("MOTIF(.*)DBLINKS");
+                    var ten = data.match("DBLINKS(.*)AASEQ");
+                    var eleven = data.match("AASEQ(.*)NTSEQ");
+                    var twelve = data.match("NTSEQ(.*)///");
 
                     var output = {
                     entry:one[1],
                     name:two[1], 
-                    definition:three[1], 
-                    organism:four[1],
-                    position:five[1],
-                    motif:six[1],
-                    dblinks:seven[1],
-                    aaseq:eight[1],
-                    ntseq:nine[1]
+                    definition:three[1],
+                    orthology:four[1],
+                    taxonomy:five[1],
+                    lineage:six[1], 
+                    organism:seven[1],
+                    position:eight[1],
+                    motif:nine[1],
+                    dblinks:ten[1],
+                    aaseq:eleven[1],
+                    ntseq:twelve[1]
                     };
 
                     console.log(output);
