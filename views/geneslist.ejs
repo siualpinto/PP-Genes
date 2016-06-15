@@ -13,6 +13,7 @@
 <body>
 <%- include /partials/header.ejs %>
 <table id="organisms" class="table table-striped" width="100%">
+        <% if (typeof type == 'undefined') { %> 
         <thead>
             <tr>
                 <th>Pathway</th>
@@ -33,6 +34,24 @@
            </tr>
         <% } %>
         </tbody>
+        <% } else{%>
+        <thead>
+            <tr>
+                <th class="text-center">Genes For Pathway <%= JSON.parse(JSON.stringify(data[0].split("\t")))[0] %></th>
+            </tr>
+        </thead>
+        <tbody>
+        <% for(var i=0; i < data.length-1; i++) { %>
+           <tr>
+             <td class="text-center">
+                <a href="#" class="idgene">
+               <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
+               </a>
+             </td>
+           </tr>
+        <% } %>
+        </tbody>
+        <% } %>
     </table>
 </body>
 </html>

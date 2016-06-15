@@ -17,6 +17,7 @@
             <tr>
                 <th>Pathway</th>
                 <th>Information</th>
+                <th>Pathway Image </th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
              </td>
              <td>
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
+             </td>
+             <td>
+             <a href="http://rest.kegg.jp/get/hsa05130/image" target="_blank"><img src="http://rest.kegg.jp/get/hsa05130/image" alt="" border=3 height=100 width=100></img></a>
              </td>
            </tr>
         <% } %>
@@ -47,7 +51,7 @@ var x = document.getElementsByClassName("idpath");
     var i;
     for (i = 0; i < x.length; i++) {
         var params = x[i].innerText.split(":");
-        x[i].href = '/search/:' + params[0] + "/:" + params[1];
+        x[i].href = '/pathway/genes/:' + params[1];
     }
 
 </script>

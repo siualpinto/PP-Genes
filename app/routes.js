@@ -168,6 +168,51 @@ module.exports = function(app, passport,http) {
             }); 
     });
 
+    app.get('/pathway/genes/:path', function(req, res){
+
+        var xyz = req.params.path.split(':')[1];
+
+        var options = {
+          host: 'rest.kegg.jp',
+          path: '/link/genes/'+xyz,
+          headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+         var request = http.get(options, function (response) {
+
+            var data = '';
+
+            response.on('data', function (chunk) {
+                data += chunk;
+            }); 
+
+            response.on("end", function (err) {
+
+                console.log('DATA: ' + data);
+
+                if(err || data == null || data == ''){
+                    res.render('index.ejs');
+                    return;
+                }
+
+
+                //console.log(data);          
+
+                var result = data.split("\n");
+
+                 res.render('geneslist.ejs', {
+                    data : result,
+                    type : "pathway"
+            });
+
+        }); 
+
+
+        }); 
+
+    });
 
     app.get('/search/:params/:params2', function(req, res) {
             
@@ -176,8 +221,8 @@ module.exports = function(app, passport,http) {
         var params2 = req.params.params2;
         console.log(params + params2);
         if (params == null || params2 == null){
-            
-
+            res.render('index.ejs');
+            return;
         }
 
 
@@ -249,20 +294,123 @@ module.exports = function(app, passport,http) {
                     } 
                     if(nine != null){
                     output.ntseq=nine[1];
-                    } 
+                    }
 
+                  var options2 = {
+                      host: 'rest.kegg.jp',
+                      path: '/conv/ncbi-geneid/' + first[1] + ":" + second[1],
+                      headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    };
+
+                    var request2 = http.get(options2, function (response2) {
+
+                        var data = '';
+
+                        response2.setEncoding('utf8');
+
+                        response2.on('data', function (chunk) {
+                            data += chunk;
+                        }); 
+
+                        response2.on("end", function (err) {
+
+                            if(err || data == null || data == ''){
+                                res.render('search.ejs', {
+                                gene : output // get the user out of session and pass to template
+                            });
+                            }
+
+                             var id = data.match("ncbi-geneid(.*)");
+
+                             console.log(id[1]);
+
+                             var options3 = {
+                              host:'www.ncbi.nlm.nih.gov',
+                              path: '/entrez/eutils/esummary.fcgi?db=gene&id=1'
+                            };
+
+                        var request3 = http.get(options3, function (response3) {
+
+                            var data = '';
+
+                            response3.setEncoding('utf8');
+
+                            response3.on('data', function (chunk) {
+                                data += chunk;
+                            }); 
+
+                            response3.on("end", function (err) {
+
+                                if(err || data == null || data == ''){
+                                    res.render('search.ejs', {
+                                    gene : output // get the user out of session and pass to template
+                                });
+                                }
+
+                                 
+                                 data = data.replace(/(\r\n|\n|\r)/gm,"");             
+
+                                var one = data.match("<DbBuild>(.*)</DbBuild>");
+                                var two = data.match("<Name>(.*)</Name>");
+                                var three = data.match("<Description>(.*)</Description>");
+                                var four = data.match("<Status>(.*)</Status>");
+                                var five = data.match("<CurrentID>(.*)</CurrentID>");
+                                var six = data.match("<Chromosome>(.*)</Chromosome>");
+                                var seven = data.match("<GeneticSource>(.*)</GeneticSource>");
+                                var eight = data.match("<MapLocation>(.*)</MapLocation>");
+                                var nine = data.match("<OtherAliases>(.*)</OtherAliases>");
+                                var ten = data.match("<OtherDesignations>(.*)</OtherDesignations>");
+                                var eleven = data.match("<NomenclatureSymbol>(.*)</NomenclatureSymbol>");
+                                var twelve = data.match("<NomenclatureName>(.*)</NomenclatureName>");
+                                var thirteen = data.match("<NomenclatureStatus>(.*)</NomenclatureStatus>");
+                                var fourteen = data.match("<int>(.*)</int>");
+                                var fifteen = data.match("<ChrLoc>(.*)</ChrLoc>");
+                                var sixteen = data.match("<ChrAccVer>(.*)</ChrAccVer>");
+                                var seventeen = data.match("<ChrStart>(.*)</ChrStart>");
+                                var eighteen = data.match("<ChrStop>(.*)</ChrStop>");
+                                var nineteen = data.match("<ExonCount>(.*)</ExonCount>");
+                                var twenty = data.match("<GeneWeight>(.*)</GeneWeight>");
+                                var twentyone = data.match("<Summary>(.*)</Summary>");
+                                var twentytwo = data.match("<ChrSort>(.*)</ChrSort>");
+                                var twentythree = data.match("<ScientificName>(.*)</ScientificName>");
+                                var twentyfour = data.match("<CommonName>(.*)</CommonName>");
+                                var twentyfive = data.match("<TaxID>(.*)</TaxID>");
+
+                                var output = {
+                                entry:one[1],
+                                name:two[1], 
+                                definition:three[1],
+                                orthology:four[1],
+                                taxonomy:five[1],
+                                lineage:six[1], 
+                                organism:seven[1],
+                                position:eight[1],
+                                motif:nine[1],
+                                dblinks:ten[1],
+                                aaseq:eleven[1],
+                                ntseq:twelve[1]
+                                };
                     console.log(output);
+                                 res.render('search.ejs', {
 
-                    //console.log(json);
-                     res.render('search.ejs', {
+                                    gene : output // get the user out of session and pass to template
+                             });
 
-                    gene : output // get the user out of session and pass to template
+                                 
+
+                            });
+
+                        });
+                             
+
+                        });
+
+                    }); 
                 });
-
+                         
             }); 
-
-
-        }); 
 
      });
 

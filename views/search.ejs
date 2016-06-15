@@ -21,7 +21,7 @@
                             <strong>Entry</strong>: <%= gene.entry.split(";")[i] %><br>
                         <% } %>
                          <%if (gene.name != null) { %>
-                            <strong>Name</strong>: <%= gene.name %><br>
+                            <strong>Name</strong>: <%= gene.name.split(";")[i] %><br>
                         <% } %>
                         <%if (gene.definition != null) { %>
                             <strong>Definition</strong>: <%= gene.definition.split(";")[i] %><br>
