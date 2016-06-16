@@ -14,9 +14,7 @@
 </head>
 <body>
 <%- include /partials/header.ejs %>
-<div id="loading">
-<img id="loading-image" src="images/ajax-loader.gif" alt="Loading..." />
-</div>
+<div id="load_screen"><div id="loading">Loading Document</div></div>
 <table id="organisms" class="table table-striped" width="100%">
         <thead>
             <tr>
@@ -68,9 +66,10 @@
     </table>
 </div>
 <script>
-$(window).load(function() {
-     $('#loading').hide();
-  });
+window.addEventListener("load", function(){
+  var load_screen = document.getElementById("load_screen");
+  document.body.removeChild(load_screen);
+});
 
 $(document).ready(function() {
       $('#organisms').DataTable();

@@ -32,6 +32,7 @@ module.exports = function(app, passport,http) {
         });
     });
 
+    //route da listagem geral do website com todos os 4000 e tal dados contendo especie, tipologia etc etc
 
     app.get('/general', function(req, res) {
 
@@ -78,6 +79,8 @@ module.exports = function(app, passport,http) {
         }); 
     });
 
+    //route para a lista dos genes de uma especie (ex:hsa) vinda da lista geral
+
     app.get('/specific/:tipology', function(req, res) {
 
          var tipology = req.params.tipology;
@@ -122,6 +125,8 @@ module.exports = function(app, passport,http) {
 
             }); 
     });
+
+    //route do pathway de uma especie - pathway dos homo sapiens (hsa) por exemplo
 
     app.get('/pathway/:tipology', function(req, res) {
 
@@ -168,6 +173,8 @@ module.exports = function(app, passport,http) {
             }); 
     });
 
+    //route da lista de genes de um pathway
+
     app.get('/pathway/genes/:path', function(req, res){
 
         var xyz = req.params.path.split(':')[1];
@@ -213,6 +220,8 @@ module.exports = function(app, passport,http) {
         }); 
 
     });
+
+    //route da página individual de um gene (recebe a especie e o id do gene - hsa:1)
 
     app.get('/search/:params/:params2', function(req, res) {
             
@@ -306,29 +315,30 @@ module.exports = function(app, passport,http) {
 
                     var request2 = http.get(options2, function (response2) {
 
-                        var data = '';
+                        var data2 = "";
 
                         response2.setEncoding('utf8');
 
                         response2.on('data', function (chunk) {
-                            data += chunk;
+                            data2 += chunk;
                         }); 
 
                         response2.on("end", function (err) {
 
-                            if(err || data == null || data == ''){
+                            data2 = data2.replace(/(\r\n|\n|\r)/gm,"");
+
+                            if(err || !data2 || 0 === data2.length || data2 == ''){
                                 res.render('search.ejs', {
-                                gene : output // get the user out of session and pass to template
-                            });
+                                    gene : output // get the user out of session and pass to template
+                                });
+                                return;
                             }
+                             var id = data2.match("ncbi-geneid(.*)");
 
-                             var id = data.match("ncbi-geneid(.*)");
-
-                             console.log(id[1]);
-
+                             console.log("ID:" + id[1].split(":")[1]);
                              var options3 = {
                               host:'www.ncbi.nlm.nih.gov',
-                              path: '/entrez/eutils/esummary.fcgi?db=gene&id=1'
+                              path: '/entrez/eutils/esummary.fcgi?db=gene&id='+id[1].split(":")[1]
                             };
 
                         var request3 = http.get(options3, function (response3) {
@@ -346,59 +356,170 @@ module.exports = function(app, passport,http) {
                                 if(err || data == null || data == ''){
                                     res.render('search.ejs', {
                                     gene : output // get the user out of session and pass to template
-                                });
+                                    });
+                                    return;
                                 }
 
                                  
                                  data = data.replace(/(\r\n|\n|\r)/gm,"");             
 
-                                var one = data.match("<DbBuild>(.*)</DbBuild>");
-                                var two = data.match("<Name>(.*)</Name>");
-                                var three = data.match("<Description>(.*)</Description>");
-                                var four = data.match("<Status>(.*)</Status>");
-                                var five = data.match("<CurrentID>(.*)</CurrentID>");
-                                var six = data.match("<Chromosome>(.*)</Chromosome>");
-                                var seven = data.match("<GeneticSource>(.*)</GeneticSource>");
-                                var eight = data.match("<MapLocation>(.*)</MapLocation>");
-                                var nine = data.match("<OtherAliases>(.*)</OtherAliases>");
-                                var ten = data.match("<OtherDesignations>(.*)</OtherDesignations>");
-                                var eleven = data.match("<NomenclatureSymbol>(.*)</NomenclatureSymbol>");
-                                var twelve = data.match("<NomenclatureName>(.*)</NomenclatureName>");
-                                var thirteen = data.match("<NomenclatureStatus>(.*)</NomenclatureStatus>");
-                                var fourteen = data.match("<int>(.*)</int>");
-                                var fifteen = data.match("<ChrLoc>(.*)</ChrLoc>");
-                                var nineteen = data.match("<ExonCount>(.*)</ExonCount>");
-                                var twenty = data.match("<GeneWeight>(.*)</GeneWeight>");
-                                var twentyone = data.match("<Summary>(.*)</Summary>");
-                                var twentytwo = data.match("<ChrSort>(.*)</ChrSort>");
-                                var twentythree = data.match("<ScientificName>(.*)</ScientificName>");
-                                var twentyfour = data.match("<CommonName>(.*)</CommonName>");
-                                var twentyfive = data.match("<TaxID>(.*)</TaxID>");
+                                 var outputNCBI = {
+                                    };
 
-                                var outputNCBI = {
-                                DbBuild:one[1],
-                                Name:two[1], 
-                                Description:three[1],
-                                Status:four[1],
-                                CurrentID:five[1],
-                                Chromosome:six[1], 
-                                GeneticSource:seven[1],
-                                MapLocation:eight[1],
-                                OtherAliases:nine[1],
-                                OtherDesignations:ten[1],
-                                NomenclatureSymbol:eleven[1],
-                                NomenclatureName:twelve[1],
-                                NomenclatureStatus:thirteen[1],
-                                int:fourteen[1],
-                                ChrLoc:fifteen[1],
-                                ExonCount:nineteen[1],
-                                GeneWeight:twenty[1],
-                                Summary:twentyone[1],
-                                ChrSort:twentytwo[1],
-                                ScientificName:twentythree[1],
-                                CommonName:twentyfour[1],
-                                TaxID:twentyfive[1]
-                                };
+                                var one = data.match("<DbBuild>(.*)</DbBuild>");
+                                if(one != null){
+                                    outputNCBI.DbBuild=one[1];
+                                }
+                                else{
+                                    outputNCBI.DbBuild='Information N/a';
+                                }
+                                var two = data.match("<Name>(.*)</Name>");
+                                if(two != null){
+                                    outputNCBI.Name=two[1];
+                                }
+                                else{
+                                    outputNCBI.Name='Information N/a';
+                                }
+                                var three = data.match("<Description>(.*)</Description>");
+                                if(three != null){
+                                    outputNCBI.Description=three[1];
+                                }
+                                else{
+                                    outputNCBI.Description='Information N/a';
+                                }
+                                var four = data.match("<Status>(.*)</Status>");
+                                if(four != null){
+                                    outputNCBI.Status=four[1];
+                                }
+                                else{
+                                    outputNCBI.Status='Information N/a';
+                                }
+                                var five = data.match("<CurrentID>(.*)</CurrentID>");
+                                if(five != null){
+                                    outputNCBI.CurrentID=five[1];
+                                }
+                                else{
+                                    outputNCBI.CurrentID='Information N/a';
+                                }
+                                var six = data.match("<Chromosome>(.*)</Chromosome>");
+                                if(six != null){
+                                    outputNCBI.Chromosome=six[1];
+                                }
+                                else{
+                                    outputNCBI.Chromosome='Information N/a'
+                                }
+                                var seven = data.match("<GeneticSource>(.*)</GeneticSource>");
+                                if(seven != null){
+                                    outputNCBI.GeneticSource=seven[1];
+                                }
+                                else{
+                                    outputNCBI.GeneticSource='Information N/a';
+                                }
+                                var eight = data.match("<MapLocation>(.*)</MapLocation>");
+                                if(eight != null){
+                                    outputNCBI.MapLocation=eight[1];
+                                }
+                                else{
+                                    outputNCBI.MapLocation='Information N/a';
+                                }
+                                var nine = data.match("<OtherAliases>(.*)</OtherAliases>");
+                                if(nine != null){
+                                    outputNCBI.OtherAliases=nine[1];
+                                }
+                                else{
+                                    outputNCBI.OtherAliases='Information N/a';
+                                }
+                                var ten = data.match("<OtherDesignations>(.*)</OtherDesignations>");
+                                if(ten != null){
+                                    outputNCBI.OtherDesignations=ten[1];
+                                }
+                                else{
+                                    outputNCBI.OtherDesignations='Information N/a';
+                                }
+                                var eleven = data.match("<NomenclatureSymbol>(.*)</NomenclatureSymbol>");
+                                if(eleven != null){
+                                    outputNCBI.NomenclatureSymbol=eleven[1];
+                                }
+                                else{
+                                    outputNCBI.NomenclatureSymbol='Information N/a';
+                                }
+                                var twelve = data.match("<NomenclatureName>(.*)</NomenclatureName>");
+                                if(twelve != null){
+                                    outputNCBI.NomenclatureName=twelve[1];
+                                }
+                                else{
+                                    outputNCBI.NomenclatureName='Information N/a';
+                                }
+                                var thirteen = data.match("<NomenclatureStatus>(.*)</NomenclatureStatus>");
+                                if(thirteen != null){
+                                    outputNCBI.NomenclatureStatus=thirteen[1];
+                                }
+                                else{
+                                    outputNCBI.NomenclatureStatus='Information N/a';
+                                }
+                                var fourteen = data.match("<int>(.*)</int>");
+                                if(fourteen != null){
+                                    outputNCBI.int=fourteen[1];
+                                }
+                                else{
+                                    outputNCBI.int='Information N/a';
+                                }
+                                var fifteen = data.match("<ChrLoc>(.*)</ChrLoc>");
+                                if(fifteen != null){
+                                    outputNCBI.ChrLoc=fifteen[1];
+                                }
+                                else{
+                                    outputNCBI.ChrLoc='Information N/a';
+                                }
+                                var nineteen = data.match("<ExonCount>(.*)</ExonCount>");
+                                if(nineteen != null){
+                                    outputNCBI.ExonCount=nineteen[1];
+                                }
+                                else{
+                                    outputNCBI.ExonCount='Information N/a';
+                                }
+                                var twenty = data.match("<GeneWeight>(.*)</GeneWeight>");
+                                if(twenty != null){
+                                    outputNCBI.GeneWeight=twenty[1];
+                                }
+                                else{
+                                    outputNCBI.GeneWeight='Information N/a';
+                                }
+                                var twentyone = data.match("<Summary>(.*)</Summary>");
+                                if(twentyone != null){
+                                    outputNCBI.Summary=twentyone[1];
+                                }
+                                else{
+                                    outputNCBI.Summary='Information N/a';
+                                }
+                                var twentytwo = data.match("<ChrSort>(.*)</ChrSort>");
+                                if(twentytwo != null){
+                                    outputNCBI.ChrSort=twentytwo[1];
+                                }
+                                else{
+                                    outputNCBI.ChrSort='Information N/a';
+                                }
+                                var twentythree = data.match("<ScientificName>(.*)</ScientificName>");
+                                if(twentythree != null){
+                                    outputNCBI.ScientificName=twentythree[1];
+                                }
+                                else{
+                                    outputNCBI.ScientificName='Information N/a';
+                                }
+                                var twentyfour = data.match("<CommonName>(.*)</CommonName>");
+                                if(twentyfour != null){
+                                    outputNCBI.CommonName=twentyfour[1];
+                                }
+                                else{
+                                    outputNCBI.CommonName='Information N/a';
+                                }
+                                var twentyfive = data.match("<TaxID>(.*)</TaxID>");
+                                if(twentyfive != null){
+                                    outputNCBI.TaxID=twentyfive[1];
+                                }
+                                else{
+                                    outputNCBI.TaxID='Information N/a';
+                                }
 
                                  res.render('search.ejs', {
 
@@ -422,127 +543,54 @@ module.exports = function(app, passport,http) {
 
      });
 
+    //route para procurar informação de um gene por keyword (header)
+
     app.post('/search', function(req, res) {
 
-            if(req.body.species != null || req.body.search != null){
+        console.log(JSON.stringify(req.body.keyword));
+        var xyz = req.body.keyword.replace(/ /g,"%20");
+        var options = {
+          host: 'rest.kegg.jp',
+          path: '/find/genes/'+JSON.stringify(xyz),
+          headers: {
+                'Content-Type': 'application/json'
+            }
+        };
 
-            var options = {
-              host: 'rest.kegg.jp',
-              path: '/get/' + req.body.species + ':' + req.body.search,
-              headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
+         var request = http.get(options, function (response) {
 
-            var request = http.get(options, function (response) {
+            var data = '';
 
-                var data = '';
+            response.setEncoding('utf8');
 
-                response.setEncoding('utf8');
-
-                response.on('data', function (chunk) {
-                    data += chunk;
-                }); 
-
-                response.on("end", function (err) {
-
-                    if(err || data == null || data == ''){
-                        res.render('index.ejs');
-                        return;
-                    }
-
-                    data = data.replace(/(\r\n|\n|\r)/gm,"");             
-
-                    var one = data.match("ENTRY(.*)NAME");
-                    var two = data.match("NAME(.*)DEFINITION");
-                    var three = data.match("DEFINITION(.*)AORTHOLOGY");
-                    var four = data.match("AORTHOLOGY(.*)TAXONOMY");
-                    var five = data.match("TAXONOMY(.*)LINEAGE");
-                    var six = data.match("LINEAGE(.*)ORGANISM");
-                    var seven = data.match("ORGANISM(.*)POSITION");
-                    var eight = data.match("POSITION(.*)MOTIF");
-                    var nine = data.match("MOTIF(.*)DBLINKS");
-                    var ten = data.match("DBLINKS(.*)AASEQ");
-                    var eleven = data.match("AASEQ(.*)NTSEQ");
-                    var twelve = data.match("NTSEQ(.*)///");
-
-                    var output = {
-                    entry:one[1],
-                    name:two[1], 
-                    definition:three[1],
-                    orthology:four[1],
-                    taxonomy:five[1],
-                    lineage:six[1], 
-                    organism:seven[1],
-                    position:eight[1],
-                    motif:nine[1],
-                    dblinks:ten[1],
-                    aaseq:eleven[1],
-                    ntseq:twelve[1]
-                    };
-
-                    console.log(output);
-
-                    //console.log(json);
-                     res.render('search.ejs', {
-
-                    gene : output // get the user out of session and pass to template
-                });
-
+            response.on('data', function (chunk) {
+                data += chunk;
             }); 
 
+            response.on("end", function (err) {
 
+                if(err || data == null || data == ''){
+                    res.render('index.ejs');
+                    return;
+                }
+
+
+                //console.log(data);          
+
+                var result = data.split("\n");
+                var one = JSON.parse(JSON.stringify(result[0].split("\t")));
+
+                 res.render('geneslist.ejs', {
+                    data : result
             });
 
-            }
-            else{
-
-                console.log(JSON.stringify(req.body.keyword));
-                var xyz = req.body.keyword.replace(/ /g,"%20");
-                var options = {
-                  host: 'rest.kegg.jp',
-                  path: '/find/genes/'+JSON.stringify(xyz),
-                  headers: {
-                        'Content-Type': 'application/json'
-                    }
-                };
-
-                 var request = http.get(options, function (response) {
-
-                    var data = '';
-
-                    response.setEncoding('utf8');
-
-                    response.on('data', function (chunk) {
-                        data += chunk;
-                    }); 
-
-                    response.on("end", function (err) {
-
-                        if(err || data == null || data == ''){
-                            res.render('index.ejs');
-                            return;
-                        }
+        }); 
 
 
-                        //console.log(data);          
-
-                        var result = data.split("\n");
-                        var one = JSON.parse(JSON.stringify(result[0].split("\t")));
-
-                         res.render('geneslist.ejs', {
-                            data : result
-                    });
-
-                }); 
-
-
-            }); 
-
-
-
-            } 
+        }); 
     });
+
+    //route para ir buscar as especies do advanced search - dropdown
 
     app.get('/asearch', function(req, res) {
 
@@ -565,6 +613,8 @@ module.exports = function(app, passport,http) {
         });
     });
 
+    //route do form da avanced search
+
     app.post('/asearch', function(req, res) {
 
             var id = req.body.genes; 
@@ -584,8 +634,6 @@ module.exports = function(app, passport,http) {
                 else
                     request += specie[i]+":"+id[i];
             }
-
-            console.log(request);
 
             var options = {
               host: 'rest.kegg.jp',
@@ -616,72 +664,36 @@ module.exports = function(app, passport,http) {
                     while ( (result = regex.exec(data)) ) {
                         Entryindices.push(result.index);
                     }
+
                     var regex = /NAME/gi, result, Nameindices = [];
                     while ( (result = regex.exec(data)) ) {
                         Nameindices.push(result.index);
                     }
-                    var regex = /DEFINITION/gi, result, Definiindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Definiindices.push(result.index);
-                    }
-                    var regex = /ORGANISM/gi, result, Orgaindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Orgaindices.push(result.index);
-                    }
-                    var regex = /POSITION/gi, result, Posiindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Posiindices.push(result.index);
-                    }
-                    var regex = /MOTIF/gi, result, Motifindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Motifindices.push(result.index);
-                    }
-                    var regex = /DBLINKS/gi, result, DBlinksindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        DBlinksindices.push(result.index);
-                    }
-                    var regex = /AASEQ/gi, result, AASEQindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        AASEQindices.push(result.index);
-                    }
-                    var regex = /NTSEQ/gi, result, NTSEQindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        NTSEQindices.push(result.index);
-                    };
-                    var regex = /\/\/\//ig, result, Slashindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Slashindices.push(result.index);
-                    }
 
-                    var output = {
-                        entry:'',
-                        name:'',
-                        definition:'',
-                        organism:'',
-                        position:'',
-                        motif:'',
-                        dblinks:'',
-                        aaseq:'',
-                        ntseq:''
-                    };
+                    var IndicesAll = [];
 
                     for(var k=0; k<Entryindices.length;k++){
-                        output.entry += data.substring(Entryindices[k]+5,Nameindices[k]-1)+";";
-                        output.name += data.substring(Nameindices[k]+4,Definiindices[k]-1)+";";
-                        output.definition += data.substring(Definiindices[k]+10,Orgaindices[k]-1)+";";
-                        output.organism += data.substring(Orgaindices[k]+8,Posiindices[k]-1)+";";
-                        output.position += data.substring(Posiindices[k]+8,Motifindices[k]-1)+";";
-                        output.motif += data.substring(Motifindices[k]+5,DBlinksindices[k]-1)+";";
-                        output.dblinks += data.substring(DBlinksindices[k]+7,AASEQindices[k]-1)+";";
-                        output.aaseq += data.substring(AASEQindices[k]+5,NTSEQindices[k]-1)+";";                      
-                        output.ntseq += data.substring(NTSEQindices[k]+5,Slashindices[k]-1)+";";
+
+                        indice = data.substring(Entryindices[k]+5,Nameindices[k]-1).replace(/^\s+|\s+$/g,"");
+                        indice = indice.substr(0,indice.indexOf(' '));
+
+                        IndicesAll.push(indice);
                     }
 
-                     res.render('search.ejs', {
-                        gene : output,
-                        number : k
-                    });
+                    var diff = (id).diff(IndicesAll);
+                    var gene ='';
+                    for(var j=0; j<diff.length;j++){
 
+                        gene += specie[diff[j]]+":"+id[diff[j]]+";";
+                        
+                    }
+                    console.log(gene.split(";").length-1);
+                    console.log(gene);
+                     console.log(gene.split(";")[0]);
+                     res.render('geneslist.ejs', {
+                        gene : gene,
+                        type : 'asearch'
+                    });
             }); 
 
 
@@ -704,3 +716,12 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+Array.prototype.diff = function(arr2) {
+    var ret = [];
+    for(var i in this) {   
+        if(arr2.indexOf( this[i] ) > -1){
+            ret.push( this.indexOf( this[i] ) );
+        }
+    }
+    return ret;
+};

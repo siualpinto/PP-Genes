@@ -11,158 +11,115 @@
 <%- include /partials/header.ejs %>
 <div class="container" style="padding-top:80px; word-wrap:break-word;">
     <div class="row">
-
-                    <%if (typeof number != 'undefined') { %> 
-                    <% for(var i=0; i < number; i++) { %>
-                    <div class="col-sm-<%= 12/number %> content">
-                    <h3 class="text-center"><span class="fa fa-info"></span> Gene Information </h3>
-                    <p>
-                        <%if (gene.entry != null) { %>
-                            <strong>Entry</strong>: <%= gene.entry.split(";")[i] %><br>
-                        <% } %>
-                         <%if (gene.name != null) { %>
-                            <strong>Name</strong>: <%= gene.name.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.definition != null) { %>
-                            <strong>Definition</strong>: <%= gene.definition.split(";")[i] %><br>
-                        <% } %>
-                         <%if (gene.orthology != null) { %>
-                            <strong>Aorthology</strong>: <%= gene.orthology.split(";")[i] %><br>
-                        <% } %>
-                         <%if (gene.taxonomy != null) { %>
-                            <strong>Taxonomy</strong>: <%= gene.taxonomy.split(";")[i] %><br>
-                        <% } %>
-                         <%if (gene.lineage != null) { %>
-                            <strong>Lineage</strong>: <%= gene.lineage.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.organism != null) { %>
-                            <strong>Organism</strong>: <%= gene.organism.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.position != null) { %>
-                            <strong>Position</strong>: <%= gene.position.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.motif != null) { %>
-                            <strong>Motif</strong>: <%= gene.motif.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.dblinks != null) { %>
-                            <strong>DBlinks</strong>: <%= gene.dblinks.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.aaseq != null) { %>
-                            <strong>AAseq</strong>: <%= gene.aaseq.split(";")[i] %><br>
-                        <% } %>
-                        <%if (gene.ntseq != null) { %>
-                            <strong>NTseq</strong>: <%= gene.ntseq.split(";")[i] %><br>
-                        <% } %>
-                         </p>
-                         </div>
-                        <% } %>
-                   
-                     <% } else{%>
-                    <div class="col-sm-6">
-                    <h3 class="text-center"><span class="fa fa-info"></span> KEGG Gene Information </h3>
-                    <p>
-                        <%if (gene.entry != null) { %>
-                            <strong>Entry</strong>: <%= gene.entry %><br>
-                        <% } %>
-                         <%if (gene.name != null) { %>
-                            <strong>Name</strong>: <%= gene.name %><br>
-                        <% } %>
-                        <%if (gene.definition != null) { %>
-                            <strong>Definition</strong>: <%= gene.definition %><br>
-                        <% } %>
-                        <%if (gene.organism != null) { %>
-                            <strong>Organism</strong>: <%= gene.organism %><br>
-                        <% } %>
-                        <%if (gene.position != null) { %>
-                            <strong>Position</strong>: <%= gene.position %><br>
-                        <% } %>
-                        <%if (gene.motif != null) { %>
-                            <strong>Motif</strong>: <%= gene.motif %><br>
-                        <% } %>
-                        <%if (gene.dblinks != null) { %>
-                            <strong>DBlinks</strong>: <%= gene.dblinks %><br>
-                        <% } %>
-                        <%if (gene.aaseq != null) { %>
-                            <strong>AAseq</strong>: <%= gene.aaseq %><br>
-                        <% } %>
-                        <%if (gene.ntseq != null) { %>
-                            <strong>NTseq</strong>: <%= gene.ntseq %><br>
-                        <% } %>
-                    </p>
-                    </div>
-                    <div class="col-sm-6">
-                    <h3 class="text-center"><span class="fa fa-info"></span> NCBI Gene Information </h3>
-                    <p>
-                        <%if (geneNCBI.DbBuild != null) { %>
-                            <strong>Db Build</strong>: <%= geneNCBI.DbBuild %><br>
-                        <% } %>
-                         <%if (geneNCBI.Name != null) { %>
-                            <strong>Name</strong>: <%= geneNCBI.Name %><br>
-                        <% } %>
-                        <%if (geneNCBI.Description != null) { %>
-                            <strong>Description</strong>: <%= geneNCBI.Description %><br>
-                        <% } %>
-                        <%if (geneNCBI.Status != null) { %>
-                            <strong>Status</strong>: <%= geneNCBI.Status %><br>
-                        <% } %>
-                        <%if (geneNCBI.CurrentID != null) { %>
-                            <strong>Current ID</strong>: <%= geneNCBI.CurrentID %><br>
-                        <% } %>
-                        <%if (geneNCBI.Chromosome != null) { %>
-                            <strong>Chromosome</strong>: <%= geneNCBI.Chromosome %><br>
-                        <% } %>
-                        <%if (geneNCBI.GeneticSource != null) { %>
-                            <strong>Genetic Source</strong>: <%= geneNCBI.GeneticSource %><br>
-                        <% } %>
-                        <%if (geneNCBI.MapLocation != null) { %>
-                            <strong>Map Location</strong>: <%= geneNCBI.MapLocation %><br>
-                        <% } %>
-                        <%if (geneNCBI.OtherAliases != null) { %>
-                            <strong>Other Aliases</strong>: <%= geneNCBI.OtherAliases %><br>
-                        <% } %>
-                        <%if (geneNCBI.OtherDesignations != null) { %>
-                            <strong>Other Designations</strong>: <%= geneNCBI.OtherDesignations %><br>
-                        <% } %>
-                        <%if (geneNCBI.NomenclatureSymbol != null) { %>
-                            <strong>Nomenclature Symbol</strong>: <%= geneNCBI.NomenclatureSymbol %><br>
-                        <% } %>
-                        <%if (geneNCBI.NomenclatureName != null) { %>
-                            <strong>Nomenclature Name</strong>: <%= geneNCBI.NomenclatureName %><br>
-                        <% } %>
-                        <%if (geneNCBI.NomenclatureStatus != null) { %>
-                            <strong>Nomenclature Status</strong>: <%= geneNCBI.NomenclatureStatus %><br>
-                        <% } %>
-                        <%if (geneNCBI.int != null) { %>
-                            <strong>Int</strong>: <%= geneNCBI.int %><br>
-                        <% } %>
-                        <%if (geneNCBI.ChrLoc != null) { %>
-                            <strong>ChrLoc</strong>: <%= geneNCBI.ChrLoc %><br>
-                        <% } %>
-                        <%if (geneNCBI.ExonCount != null) { %>
-                            <strong>Exon Count</strong>: <%= geneNCBI.ExonCount %><br>
-                        <% } %>
-                        <%if (geneNCBI.GeneWeight != null) { %>
-                            <strong>Gene Weight</strong>: <%= geneNCBI.GeneWeight %><br>
-                        <% } %>
-                        <%if (geneNCBI.Summary != null) { %>
-                            <strong>Summary</strong>: <%= geneNCBI.Summary %><br>
-                        <% } %>
-                        <%if (geneNCBI.ChrSort != null) { %>
-                            <strong>ChrSort</strong>: <%= geneNCBI.ChrSort %><br>
-                        <% } %>
-                        <%if (geneNCBI.ScientificName != null) { %>
-                            <strong>Scientific Name</strong>: <%= geneNCBI.ScientificName %><br>
-                        <% } %>
-                        <%if (geneNCBI.CommonName != null) { %>
-                            <strong>Common Name</strong>: <%= geneNCBI.CommonName %><br>
-                        <% } %>
-                        <%if (geneNCBI.TaxID != null) { %>
-                            <strong>Tax ID</strong>: <%= geneNCBI.TaxID %><br>
-                        <% } %>
-                    </p>
-                    </div>
-                     <% } %>
-
+        <div class="col-sm-6">
+        <h3 class="text-center"><span class="fa fa-info"></span> KEGG Gene Information </h3>
+        <p>
+            <%if (gene.entry != null) { %>
+                <strong>Entry</strong>: <%= gene.entry %><br>
+            <% } %>
+             <%if (gene.name != null) { %>
+                <strong>Name</strong>: <%= gene.name %><br>
+            <% } %>
+            <%if (gene.definition != null) { %>
+                <strong>Definition</strong>: <%= gene.definition %><br>
+            <% } %>
+            <%if (gene.organism != null) { %>
+                <strong>Organism</strong>: <%= gene.organism %><br>
+            <% } %>
+            <%if (gene.position != null) { %>
+                <strong>Position</strong>: <%= gene.position %><br>
+            <% } %>
+            <%if (gene.motif != null) { %>
+                <strong>Motif</strong>: <%= gene.motif %><br>
+            <% } %>
+            <%if (gene.dblinks != null) { %>
+                <strong>DBlinks</strong>: <%= gene.dblinks %><br>
+            <% } %>
+            <%if (gene.aaseq != null) { %>
+                <strong>AAseq</strong>: <%= gene.aaseq %><br>
+            <% } %>
+            <%if (gene.ntseq != null) { %>
+                <strong>NTseq</strong>: <%= gene.ntseq %><br>
+            <% } %>
+        </p>
+        </div>
+        <%if (typeof geneNCBI != 'undefined') { %> 
+        <div class="col-sm-6">
+        <h3 class="text-center"><span class="fa fa-info"></span> NCBI Gene Information </h3>
+        <p> 
+            <%if (geneNCBI.DbBuild != null) { %>
+                <strong>Db Build</strong>: <%= geneNCBI.DbBuild %><br>
+            <% } %>
+             <%if (geneNCBI.Name != null) { %>
+                <strong>Name</strong>: <%= geneNCBI.Name %><br>
+            <% } %>
+            <%if (geneNCBI.Description != null) { %>
+                <strong>Description</strong>: <%= geneNCBI.Description %><br>
+            <% } %>
+            <%if (geneNCBI.Status != null) { %>
+                <strong>Status</strong>: <%= geneNCBI.Status %><br>
+            <% } %>
+            <%if (geneNCBI.CurrentID != null) { %>
+                <strong>Current ID</strong>: <%= geneNCBI.CurrentID %><br>
+            <% } %>
+            <%if (geneNCBI.Chromosome != null) { %>
+                <strong>Chromosome</strong>: <%= geneNCBI.Chromosome %><br>
+            <% } %>
+            <%if (geneNCBI.GeneticSource != null) { %>
+                <strong>Genetic Source</strong>: <%= geneNCBI.GeneticSource %><br>
+            <% } %>
+            <%if (geneNCBI.MapLocation != null) { %>
+                <strong>Map Location</strong>: <%= geneNCBI.MapLocation %><br>
+            <% } %>
+            <%if (geneNCBI.OtherAliases != null) { %>
+                <strong>Other Aliases</strong>: <%= geneNCBI.OtherAliases %><br>
+            <% } %>
+            <%if (geneNCBI.OtherDesignations != null) { %>
+                <strong>Other Designations</strong>: <%= geneNCBI.OtherDesignations %><br>
+            <% } %>
+            <%if (geneNCBI.NomenclatureSymbol != null) { %>
+                <strong>Nomenclature Symbol</strong>: <%= geneNCBI.NomenclatureSymbol %><br>
+            <% } %>
+            <%if (geneNCBI.NomenclatureName != null) { %>
+                <strong>Nomenclature Name</strong>: <%= geneNCBI.NomenclatureName %><br>
+            <% } %>
+            <%if (geneNCBI.NomenclatureStatus != null) { %>
+                <strong>Nomenclature Status</strong>: <%= geneNCBI.NomenclatureStatus %><br>
+            <% } %>
+            <%if (geneNCBI.int != null) { %>
+                <strong>Int</strong>: <%= geneNCBI.int %><br>
+            <% } %>
+            <%if (geneNCBI.ChrLoc != null) { %>
+                <strong>ChrLoc</strong>: <%= geneNCBI.ChrLoc %><br>
+            <% } %>
+            <%if (geneNCBI.ExonCount != null) { %>
+                <strong>Exon Count</strong>: <%= geneNCBI.ExonCount %><br>
+            <% } %>
+            <%if (geneNCBI.GeneWeight != null) { %>
+                <strong>Gene Weight</strong>: <%= geneNCBI.GeneWeight %><br>
+            <% } %>
+            <%if (geneNCBI.Summary != null) { %>
+                <strong>Summary</strong>: <%= geneNCBI.Summary %><br>
+            <% } %>
+            <%if (geneNCBI.ChrSort != null) { %>
+                <strong>ChrSort</strong>: <%= geneNCBI.ChrSort %><br>
+            <% } %>
+            <%if (geneNCBI.ScientificName != null) { %>
+                <strong>Scientific Name</strong>: <%= geneNCBI.ScientificName %><br>
+            <% } %>
+            <%if (geneNCBI.CommonName != null) { %>
+                <strong>Common Name</strong>: <%= geneNCBI.CommonName %><br>
+            <% } %>
+            <%if (geneNCBI.TaxID != null) { %>
+                <strong>Tax ID</strong>: <%= geneNCBI.TaxID %><br>
+            <% } %>
+        </p>
+        </div>
+        <% } else{%>
+            <div class="col-sm-6" style="text-align:center">
+             <h3><span class="fa fa-info"></span> NCBI Gene Information </h3>
+             <strong class="text-center">No NCBI Information available for this gene! :(</strong><br>
+        <% } %>
     </div>
 </div>
 </body>
