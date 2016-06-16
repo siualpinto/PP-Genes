@@ -1,54 +1,64 @@
-/// write to file
-var txtFile = "c:/test.txt";
-var file = new File(txtFile);
-var str = "My string of text";
-
-file.open("w"); // open file with write access
-file.writeln("First line of text");
-file.writeln("Second line of text " + str);
-file.write(str);
-file.close();
-
-/// read from file
-
-var txtFile = "c:/test.txt"
-var file = new File(txtFile);
-
-file.open("r"); // open file with read access
-var str = "";
-while (!file.eof) {
-	// read each line of text
-	str += file.readln() + "\n";
-}
-file.close();
-alert(str);
-
 ////////////////////////////////////////////////////
 /**
  * writeTextFile write data to file on hard drive
  * @param  string  filepath   Path to file on hard drive
  * @param  sring   output     Data to be written
  */
-function writeTextFile(filepath, output) {
-	var txtFile = new File(filepath);
-	txtFile.open("w"); //
-	txtFile.writeln(output);
-	txtFile.close();
-}
+function WriteToFile(namefile, data){ 
 
-////////////////////////////////////////////////////
-/**
- * readTextFile read data from file
- * @param  string   filepath   Path to file on hard drive
- * @return string              String with file data
- */
-function readTextFile(filepath) {
-	var str = "";
-	var txtFile = new File(filepath);
-	txtFile.open("r");
-	while (!txtFile.eof) {
-		// read each line of text
-		str += txtFile.readln() + "\n";
+	namefile = namefile.replace(/^\s+|\s+$/g,"");
+	namefile = namefile.substr(0,namefile.indexOf(' '));
+	data = JSON.parse(data);
+	var arrayData = [];
+
+	if(data.entry != null){
+		var entry = "kegg_entry("+namefile+"):-write(\'" + data.entry.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(entry);
 	}
-	return str;
+
+	if(data.name != null){
+		var name = "kegg_name("+namefile+"):-write(\'" + data.name.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(name);
+	}
+	
+	if(data.definition != null){
+		var definition = "kegg_definition("+namefile+"):-write(\'" + data.definition.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(definition);
+	}
+	
+	if(data.organism != null){
+		var organism = "kegg_organism("+namefile+"):-write(\'" + data.organism.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(organism);
+	}
+	
+	if(data.position != null) {
+		var position = "kegg_position("+namefile+"):-write(\'" + data.position.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(position);
+	}
+	
+	if(data.motif != null){
+		var motif = "kegg_motif("+namefile+"):-write(\'" + data.motif.replace(/^\s+|\s+$/g,"") +"\').";	
+		arrayData.push(motif);
+	}
+	
+	if(data.dblinks != null) {
+		var dblinks = "kegg_dblinks("+namefile+"):-write(\'" + data.dblinks.replace(/^\s+|\s+$/g,"") +"\').";
+		arrayData.push(dblinks);
+	}
+	
+	if(data.aaseq != null) {
+		var aaseqAux = data.aaseq.replace(/\s+/g, '');
+		var aaseq = "kegg_aaseq("+namefile+"):-write(\'" + aaseqAux.replace(/[0-9]/g, '') +"\').";
+		arrayData.push(aaseq);
+	}
+	
+	if(data.ntseq != null) {
+		var ntseqAux = data.ntseq.replace(/\s+/g, '');
+		var ntseq = "kegg_ntseq("+namefile+"):-write(\'" + ntseqAux.replace(/[0-9]/g, '') +"\').";
+		arrayData.push(ntseq);
+	}
+	
+  	var blob = new Blob([arrayData.join('\r\n')], {type: "text/plain;charset=utf-8"});
+ 	 saveAs(blob, "gene_"+namefile+".pl");
+
 }

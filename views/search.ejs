@@ -5,7 +5,9 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 
-    <script type="text/javascript" src="/scripts/toprolog.js"></script>
+    <script src="/scripts/writetofile.js"></script>
+    <script src="/scripts/FileSaver.js"></script>
+
 </head>
 <body>
 <%- include /partials/header.ejs %>
@@ -121,6 +123,10 @@
              <strong class="text-center">No NCBI Information available for this gene! :(</strong><br>
         <% } %>
     </div>
+    <div style="text-align: center;">
+     <button type="button" class="btn btn-success" onclick="WriteToFile( '<%= gene.entry %>' , '<%= JSON.stringify(gene) %>')">Download</button>
+    </div>
 </div>
 </body>
+
 </html>
