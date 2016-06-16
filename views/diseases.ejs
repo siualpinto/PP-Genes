@@ -15,24 +15,20 @@
 <table id="organisms" class="table table-striped" width="100%">
         <thead>
             <tr>
-                <th>Pathway</th>
-                <th>Information</th>
-                <th>Pathway Image </th>
+                <th class="text-center">Disease ID</th>
+                <th class="text-center">Name</th>
             </tr>
         </thead>
         <tbody>
         <% for(var i=0; i < data.length-1; i++) { %>
            <tr>
-             <td>
-                <a href="#" class="idpath">
+             <td class="text-center">
+                <a href="#" class="iddisease">
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[0] %>
                 </a>
              </td>
-             <td>
+             <td class="text-center">
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
-             </td>
-             <td>
-             <a href="http://rest.kegg.jp/get/<%= JSON.parse(JSON.stringify(data[i].split("\t")))[0].split(":")[1] %>/image" target="_blank"><img src="http://rest.kegg.jp/get/ <%= JSON.parse(JSON.stringify(data[i].split("\t")))[0].split(":")[1] %>/image" alt="" border=3 height=100 width=100></img></a>
              </td>
            </tr>
         <% } %>
@@ -44,14 +40,12 @@
 <script>
 $(document).ready(function() {
     $('#organisms').DataTable();
-
 } );
 
-var x = document.getElementsByClassName("idpath");
+var x = document.getElementsByClassName("iddisease");
     var i;
     for (i = 0; i < x.length; i++) {
-        var params = x[i].innerText.split(":");
-        x[i].href = '/pathway/genes/:' + params[1];
+        var params = x[i].innerText;
+        x[i].href = '/disease/:' + params;
     }
-
 </script>

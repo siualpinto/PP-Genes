@@ -79,6 +79,126 @@ module.exports = function(app, passport,http) {
         }); 
     });
 
+    //route da listagem geral do website com todas as doenças (1500 e tal)
+
+    app.get('/diseases', function(req, res) {
+
+        var options = {
+              host: 'rest.kegg.jp',
+              path: '/list/disease',
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }         
+
+                    var result = data.split("\n");
+    
+                     res.render('diseases.ejs', {
+                        data : result
+                });
+
+            }); 
+
+
+        }); 
+    });
+
+    //route da página individual de uma doença (recebe o identificador)
+
+    app.get('/disease/:iddisease', function(req, res) {
+
+         var iddisease = req.params.iddisease;
+         var trya = iddisease.split(":");
+
+            var options = {
+              host: 'rest.kegg.jp',
+              path: '/get/' + trya[1] +":"+trya[2],
+              headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            var request = http.get(options, function (response) {
+
+                var data = '';
+
+                response.setEncoding('utf8');
+
+                response.on('data', function (chunk) {
+                    data += chunk;
+                }); 
+
+                response.on("end", function (err) {
+
+                    if(err || data == null || data == ''){
+                        res.render('index.ejs');
+                        return;
+                    }
+                    data = data.replace(/(\r\n|\n|\r)/gm,"");
+                    var one = data.match("ENTRY(.*)NAME");
+                    var two = data.match("NAME(.*)DESCRIPTION");
+                    var three = data.match("DESCRIPTION(.*)CATEGORY");
+                    var four = data.match("CATEGORY(.*)BRITE");
+                    var five = data.match("BRITE(.*)PATHWAY");
+                    var six = data.match("PATHWAY(.*)GENE");
+                    var seven = data.match("GENE(.*)MARKER");
+                    var eight = data.match("MARKER(.*)DRUG");
+                    var nine = data.match("DRUG(.*)DBLINKS");
+
+                    var output = {}; 
+                    if(one != null){
+                    output.entry = one[1];
+                    }
+                    if(two != null){
+                    output.name=two[1];
+                    }
+                    if(three != null){
+                    output.description=three[1];
+                    }
+                    if(four != null){
+                    output.category=four[1];
+                    }
+                    if(five != null){
+                    output.brite=five[1];
+                    }
+                    if(six != null){
+                    output.pathway=six[1];
+                    }
+                    if(seven != null){
+                    output.gene=seven[1];
+                    } 
+                    if(eight != null){
+                    output.marker=eight[1];
+                    } 
+                    if(nine != null){
+                    output.drug=nine[1];
+                    }
+
+                    res.render('disease.ejs', {
+                        disease : output
+                     });
+                });
+
+            });  
+    });
+
     //route para a lista dos genes de uma especie (ex:hsa) vinda da lista geral
 
     app.get('/specific/:tipology', function(req, res) {
@@ -228,7 +348,7 @@ module.exports = function(app, passport,http) {
 
         var params = req.params.params;
         var params2 = req.params.params2;
-        console.log(params + params2);
+
         if (params == null || params2 == null){
             res.render('index.ejs');
             return;
@@ -335,7 +455,6 @@ module.exports = function(app, passport,http) {
                             }
                              var id = data2.match("ncbi-geneid(.*)");
 
-                             console.log("ID:" + id[1].split(":")[1]);
                              var options3 = {
                               host:'www.ncbi.nlm.nih.gov',
                               path: '/entrez/eutils/esummary.fcgi?db=gene&id='+id[1].split(":")[1]

@@ -1,0 +1,48 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+</head>
+<body>
+<%- include /partials/header.ejs %>
+<div class="container" style="padding-top:80px; word-wrap:break-word;">
+    <div class="row">
+        <div class="col-sm-12">
+        <h3 class="text-center"><span class="fa fa-info"></span> Disease Information </h3>
+        <p>
+            <%if (disease.entry != null) { %>
+                <strong>Entry</strong>: <%= disease.entry %><br>
+            <% } %>
+             <%if (disease.name != null) { %>
+                <strong>Name</strong>: <%= disease.name %><br>
+            <% } %>
+            <%if (disease.description != null) { %>
+                <strong>Description</strong>: <%= disease.description %><br>
+            <% } %>
+            <%if (disease.category != null) { %>
+                <strong>Category</strong>: <%= disease.category %><br>
+            <% } %>
+            <%if (disease.brite != null) { %>
+                <strong>Brite</strong>: <%= disease.brite %><br>
+            <% } %>
+            <%if (disease.pathway != null) { %>
+                <strong>Pathway</strong>: <%= disease.pathway %><br>
+            <% } %>
+            <%if (disease.gene != null) { %>
+                <strong>Gene</strong>: <%= disease.gene %><br>
+            <% } %>
+            <%if (disease.marker != null) { %>
+                <strong>Marker</strong>: <%= disease.marker %><br>
+            <% } %>
+            <%if (disease.drug != null) { %>
+                <strong>Drug</strong>: <%= disease.drug %><br>
+            <% } %>
+        </p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
