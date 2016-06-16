@@ -4,10 +4,15 @@
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-
+    <link rel="stylesheet" href="/styles/general.css">
 </head>
 <body>
 <%- include /partials/header.ejs %>
+
+<div id="load_screen">
+<div id="loading"><img src="/images/ajax-loader.gif" alt="" height="40" width="40"> <strong>Loading Page</strong> </div>
+</div>
+
 <div class="container" style="padding-top:80px">
 
 <div class="col-sm-6 col-sm-offset-3">
@@ -41,5 +46,12 @@
 </div>
 
 </div>
+
+<script>
+window.addEventListener("load", function(){
+  var load_screen = document.getElementById("load_screen");
+  document.body.removeChild(load_screen);
+});
+</script>
 </body>
 </html>

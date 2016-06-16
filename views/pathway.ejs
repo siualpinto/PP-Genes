@@ -7,11 +7,17 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
+    <link rel="stylesheet" href="/styles/general.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 </head>
 <body>
 <%- include /partials/header.ejs %>
+
+<div id="load_screen">
+<div id="loading"><img src="/images/ajax-loader.gif" alt="" height="40" width="40"> <strong>Loading Page</strong> </div>
+</div>
+
 <table id="organisms" class="table table-striped" width="100%">
         <thead>
             <tr>
@@ -42,6 +48,12 @@
 </html>
 
 <script>
+
+window.addEventListener("load", function(){
+  var load_screen = document.getElementById("load_screen");
+  document.body.removeChild(load_screen);
+});
+
 $(document).ready(function() {
     $('#organisms').DataTable();
 
