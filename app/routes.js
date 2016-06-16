@@ -367,9 +367,6 @@ module.exports = function(app, passport,http) {
                                 var thirteen = data.match("<NomenclatureStatus>(.*)</NomenclatureStatus>");
                                 var fourteen = data.match("<int>(.*)</int>");
                                 var fifteen = data.match("<ChrLoc>(.*)</ChrLoc>");
-                                var sixteen = data.match("<ChrAccVer>(.*)</ChrAccVer>");
-                                var seventeen = data.match("<ChrStart>(.*)</ChrStart>");
-                                var eighteen = data.match("<ChrStop>(.*)</ChrStop>");
                                 var nineteen = data.match("<ExonCount>(.*)</ExonCount>");
                                 var twenty = data.match("<GeneWeight>(.*)</GeneWeight>");
                                 var twentyone = data.match("<Summary>(.*)</Summary>");
@@ -378,24 +375,35 @@ module.exports = function(app, passport,http) {
                                 var twentyfour = data.match("<CommonName>(.*)</CommonName>");
                                 var twentyfive = data.match("<TaxID>(.*)</TaxID>");
 
-                                var output = {
-                                entry:one[1],
-                                name:two[1], 
-                                definition:three[1],
-                                orthology:four[1],
-                                taxonomy:five[1],
-                                lineage:six[1], 
-                                organism:seven[1],
-                                position:eight[1],
-                                motif:nine[1],
-                                dblinks:ten[1],
-                                aaseq:eleven[1],
-                                ntseq:twelve[1]
+                                var outputNCBI = {
+                                DbBuild:one[1],
+                                Name:two[1], 
+                                Description:three[1],
+                                Status:four[1],
+                                CurrentID:five[1],
+                                Chromosome:six[1], 
+                                GeneticSource:seven[1],
+                                MapLocation:eight[1],
+                                OtherAliases:nine[1],
+                                OtherDesignations:ten[1],
+                                NomenclatureSymbol:eleven[1],
+                                NomenclatureName:twelve[1],
+                                NomenclatureStatus:thirteen[1],
+                                int:fourteen[1],
+                                ChrLoc:fifteen[1],
+                                ExonCount:nineteen[1],
+                                GeneWeight:twenty[1],
+                                Summary:twentyone[1],
+                                ChrSort:twentytwo[1],
+                                ScientificName:twentythree[1],
+                                CommonName:twentyfour[1],
+                                TaxID:twentyfive[1]
                                 };
-                    console.log(output);
+
                                  res.render('search.ejs', {
 
-                                    gene : output // get the user out of session and pass to template
+                                    gene : output,
+                                    geneNCBI: outputNCBI // get the user out of session and pass to template
                              });
 
                                  
