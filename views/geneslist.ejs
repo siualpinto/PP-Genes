@@ -76,24 +76,23 @@
         </tbody>
         <% } %>
     </table>
-</body>
-</html>
-
 <script>
 
 window.addEventListener("load", function(){
-  var load_screen = document.getElementById("load_screen");
-  document.body.removeChild(load_screen);
+var load_screen = document.getElementById("load_screen");
+document.body.removeChild(load_screen);
 });
 
 $(document).ready(function() {
-    $('#organisms').DataTable();
+$('#organisms').DataTable();
 } );
 
 var x = document.getElementsByClassName("idgene");
-    var i;
-    for (i = 0; i < x.length; i++) {
-        var params = x[i].innerText.split(":");
-        x[i].href = '/search/:' + params[0] + "/:" + params[1];
-    }
+var i;
+for (i = 0; i < x.length; i++) {
+    var params = x[i].innerText.split(":");
+    x[i].href = '/search/:' + params[0] + "/:" + params[1];
+}
 </script>
+</body>
+</html>

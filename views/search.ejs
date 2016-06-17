@@ -21,32 +21,8 @@
         <div class="col-sm-6">
         <h3 class="text-center"><span class="fa fa-info"></span> KEGG Gene Information </h3>
         <p>
-            <%if (gene.entry != null) { %>
-                <strong>Entry</strong>: <%= gene.entry %><br>
-            <% } %>
-             <%if (gene.name != null) { %>
-                <strong>Name</strong>: <%= gene.name %><br>
-            <% } %>
-            <%if (gene.definition != null) { %>
-                <strong>Definition</strong>: <%= gene.definition %><br>
-            <% } %>
-            <%if (gene.organism != null) { %>
-                <strong>Organism</strong>: <%= gene.organism %><br>
-            <% } %>
-            <%if (gene.position != null) { %>
-                <strong>Position</strong>: <%= gene.position %><br>
-            <% } %>
-            <%if (gene.motif != null) { %>
-                <strong>Motif</strong>: <%= gene.motif %><br>
-            <% } %>
-            <%if (gene.dblinks != null) { %>
-                <strong>DBlinks</strong>: <%= gene.dblinks %><br>
-            <% } %>
-            <%if (gene.aaseq != null) { %>
-                <strong>AAseq</strong>: <%= gene.aaseq %><br>
-            <% } %>
-            <%if (gene.ntseq != null) { %>
-                <strong>NTseq</strong>: <%= gene.ntseq %><br>
+            <%for (var i=0; i<gene.length-2;i++){ %>
+                <strong><%=gene[i]%></strong>: <%= gene2[i]  %><br>
             <% } %>
         </p>
         </div>

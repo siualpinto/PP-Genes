@@ -65,9 +65,6 @@ module.exports = function(app, passport,http) {
                     //console.log(data);          
 
                     var result = data.split("\n");
-                    var one = JSON.parse(JSON.stringify(result[0].split("\t")));
-    
-                    console.log('one'+ one[3].split(";")[0]);
 
                      res.render('general.ejs', {
                         data : result
@@ -151,48 +148,29 @@ module.exports = function(app, passport,http) {
                         res.render('index.ejs');
                         return;
                     }
-                    data = data.replace(/(\r\n|\n|\r)/gm,"");
-                    var one = data.match("ENTRY(.*)NAME");
-                    var two = data.match("NAME(.*)DESCRIPTION");
-                    var three = data.match("DESCRIPTION(.*)CATEGORY");
-                    var four = data.match("CATEGORY(.*)BRITE");
-                    var five = data.match("BRITE(.*)PATHWAY");
-                    var six = data.match("PATHWAY(.*)GENE");
-                    var seven = data.match("GENE(.*)MARKER");
-                    var eight = data.match("MARKER(.*)DRUG");
-                    var nine = data.match("DRUG(.*)DBLINKS");
 
-                    var output = {}; 
-                    if(one != null){
-                    output.entry = one[1];
+
+                    var lines = data.split("\n");
+                    var entries = [];
+                    var content = [];
+
+                    for(var i = 0;i < lines.length;i++){
+                        if(lines[i].substring(0,1) != ' ')
+                            entries.push(lines[i].substring(0,12));
                     }
-                    if(two != null){
-                    output.name=two[1];
-                    }
-                    if(three != null){
-                    output.description=three[1];
-                    }
-                    if(four != null){
-                    output.category=four[1];
-                    }
-                    if(five != null){
-                    output.brite=five[1];
-                    }
-                    if(six != null){
-                    output.pathway=six[1];
-                    }
-                    if(seven != null){
-                    output.gene=seven[1];
-                    } 
-                    if(eight != null){
-                    output.marker=eight[1];
-                    } 
-                    if(nine != null){
-                    output.drug=nine[1];
+
+
+                    var copy2 = data.replace(/(\r\n|\n|\r)/gm,"");
+                    //console.log(copy);
+                    for(var j = 0;j < entries.length-2;j++){
+                        var one = copy2.match(entries[j].trim()+"(.*?)"+entries[j+1].trim());
+                        content.push(one[1]);
+                        //console.log(one);
                     }
 
                     res.render('disease.ejs', {
-                        disease : output
+                        ids     : entries,
+                        disease : content
                      });
                 });
 
@@ -317,8 +295,6 @@ module.exports = function(app, passport,http) {
 
             response.on("end", function (err) {
 
-                console.log('DATA: ' + data);
-
                 if(err || data == null || data == ''){
                     res.render('index.ejs');
                     return;
@@ -384,46 +360,26 @@ module.exports = function(app, passport,http) {
                         return;
                     }
            
-                    data = data.replace(/(\r\n|\n|\r)/gm,"");
+                    var lines = data.split("\n");
+                    var entries = [];
+                    var content = [];
 
-                    var one = data.match("ENTRY(.*)NAME");
-                    var two = data.match("NAME(.*)DEFINITION");
-                    var three = data.match("DEFINITION(.*)ORGANISM");
-                    var four = data.match("ORGANISM(.*)POSITION");
-                    var five = data.match("POSITION(.*)MOTIF");
-                    var six = data.match("MOTIF(.*)DBLINKS");
-                    var seven = data.match("DBLINKS(.*)AASEQ");
-                    var eight = data.match("AASEQ(.*)NTSEQ");
-                    var nine = data.match("NTSEQ(.*)///");
+                    for(var i = 0;i < lines.length;i++){
+                        if(lines[i].substring(0,1) != ' ')
+                            entries.push(lines[i].substring(0,12));
+                    }
 
-                    var output = {}; 
-                    if(one != null){
-                    output.entry = one[1];
+
+                    var copy2 = data.replace(/(\r\n|\n|\r)/gm,"");
+                    //console.log(copy);
+                    for(var j = 0;j < entries.length-2;j++){
+                        var one = copy2.match(entries[j].trim()+"(.*?)"+entries[j+1].trim());
+                        content.push(one[1]);
+                        //console.log(one);
                     }
-                    if(two != null){
-                    output.name=two[1];
-                    }
-                    if(three != null){
-                    output.definition=three[1];
-                    }
-                    if(four != null){
-                    output.organism=four[1];
-                    }
-                    if(five != null){
-                    output.position=five[1];
-                    }
-                    if(six != null){
-                    output.motif=six[1];
-                    }
-                    if(seven != null){
-                    output.dblinks=seven[1];
-                    } 
-                    if(eight != null){
-                    output.aaseq=eight[1];
-                    } 
-                    if(nine != null){
-                    output.ntseq=nine[1];
-                    }
+                
+
+
 
                   var options2 = {
                       host: 'rest.kegg.jp',
@@ -449,7 +405,8 @@ module.exports = function(app, passport,http) {
 
                             if(err || !data2 || 0 === data2.length || data2 == ''){
                                 res.render('search.ejs', {
-                                    gene : output // get the user out of session and pass to template
+                                     gene : entries,
+                                    gene2 : content
                                 });
                                 return;
                             }
@@ -474,7 +431,8 @@ module.exports = function(app, passport,http) {
 
                                 if(err || data == null || data == ''){
                                     res.render('search.ejs', {
-                                    gene : output // get the user out of session and pass to template
+                                    gene : entries,
+                                    gene2 : content
                                     });
                                     return;
                                 }
@@ -642,7 +600,8 @@ module.exports = function(app, passport,http) {
 
                                  res.render('search.ejs', {
 
-                                    gene : output,
+                                    gene : entries,
+                                    gene2 : content,
                                     geneNCBI: outputNCBI // get the user out of session and pass to template
                              });
 
@@ -693,11 +652,7 @@ module.exports = function(app, passport,http) {
                     return;
                 }
 
-
-                //console.log(data);          
-
                 var result = data.split("\n");
-                var one = JSON.parse(JSON.stringify(result[0].split("\t")));
 
                  res.render('geneslist.ejs', {
                     data : result
@@ -779,36 +734,45 @@ module.exports = function(app, passport,http) {
                         return;
                     }
 
-                    var regex = /ENTRY/gi, result, Entryindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Entryindices.push(result.index);
+                    var lines = data.split("\n");
+                    var entries = [];
+                    var content = [];
+
+                    for(var i = 0;i < lines.length;i++){
+                        if(lines[i].substring(0,1) != ' ')
+                            entries.push(lines[i].substring(0,12));
                     }
 
-                    var regex = /NAME/gi, result, Nameindices = [];
-                    while ( (result = regex.exec(data)) ) {
-                        Nameindices.push(result.index);
+                    copy2 = data.split("///");
+
+                    for(var k = 0;k < copy2.length-1;k++){
+                        for(var j = 0;j < entries.length-1;j++){
+                            if(entries[j].trim() === 'ENTRY'){
+                                var one = copy2[k].replace(/(\r\n|\n|\r)/gm,"").match(entries[j].trim()+"(.*)"+entries[j+1].trim());
+                                if(!isInArray(one[1], content))
+                                    content.push(one[1]);
+                            }
+                        }
                     }
 
-                    var IndicesAll = [];
+                    var gene="";
 
-                    for(var k=0; k<Entryindices.length;k++){
+                    for(var l = 0; l < content.length;l++){
 
-                        indice = data.substring(Entryindices[k]+5,Nameindices[k]-1).replace(/^\s+|\s+$/g,"");
-                        indice = indice.substr(0,indice.indexOf(' '));
+                        for(var m = 0; m < id.length;m++){
 
-                        IndicesAll.push(indice);
+                            var pat = "\\b("+id[m]+")\\b";
+                            var regex = new RegExp(pat, "g");
+                            var str = content[l].toString().slice(7);
+
+                            if(str.match(regex)){
+                                gene += specie[m]+":"+id[m]+";";
+                            }
+
+                        }
+
                     }
 
-                    var diff = (id).diff(IndicesAll);
-                    var gene ='';
-                    for(var j=0; j<diff.length;j++){
-
-                        gene += specie[diff[j]]+":"+id[diff[j]]+";";
-                        
-                    }
-                    console.log(gene.split(";").length-1);
-                    console.log(gene);
-                     console.log(gene.split(";")[0]);
                      res.render('geneslist.ejs', {
                         gene : gene,
                         type : 'asearch'
@@ -835,12 +799,12 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
-Array.prototype.diff = function(arr2) {
-    var ret = [];
-    for(var i in this) {   
-        if(arr2.indexOf( this[i] ) > -1){
-            ret.push( this.indexOf( this[i] ) );
-        }
-    }
-    return ret;
-};
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
+
+function matchExact(r, str) {
+   var match = str.match(r);
+   return match != null && str == match[0];
+}
