@@ -17,7 +17,7 @@
 </div>
 
 <div class="container" style="padding-top:80px; word-wrap:break-word;">
-    <div class="row">
+    <div class="col-sm-12">
         <div class="col-sm-6">
         <h3 class="text-center"><span class="fa fa-info"></span> KEGG Gene Information </h3>
         <p>
@@ -104,10 +104,12 @@
              <strong class="text-center">No NCBI Information available for this gene! :(</strong><br>
         <% } %>
     </div>
-    <div style="text-align: center;">
-     <button type="button" class="btn btn-success" onclick="WriteToFile( '<%= gene.entry %>' , '<%= JSON.stringify(gene) %>')">Download</button>
+
+    <div class="col-sm-12" style="text-align:center">
+     <button type="button" class="btn btn-success buttonCss" onclick="WriteToFile( '<%= JSON.stringify(gene) %>' , '<%= JSON.stringify(gene2) %>')"> Download</button>
+     <button type="button" class="btn btn-success buttonCss">Add to My Favorites</button>
     </div>
-</div>
+   
 
 <script>
 window.addEventListener("load", function(){

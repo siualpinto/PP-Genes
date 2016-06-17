@@ -19,3 +19,19 @@ div#load_screen > div#loading{
   margin-left:25px;
   margin-right:25px;
 }
+
+.buttonCss {
+  min-width: 150px;
+  min-height: 40px;
+  font-weight: bold;
+  font-family: Verdana;
+}
+
+body {
+  padding-bottom: 25px;
+
+}
+
+.col-sm-6 p{
+   font-family: Trebuchet MS;
+}
