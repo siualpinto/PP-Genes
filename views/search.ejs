@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/styles/general.css">
     <script src="/scripts/writetofile.js"></script>
     <script src="/scripts/FileSaver.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="/scripts/favorites.js"></script>
 
 </head>
 <body>
@@ -107,7 +109,7 @@
 
     <div class="col-sm-12" style="text-align:center">
      <button type="button" class="btn btn-success buttonCss" onclick="WriteToFile( '<%= JSON.stringify(gene) %>' , '<%= JSON.stringify(gene2) %>')"> Download</button>
-     <button type="button" class="btn btn-success buttonCss">Add to My Favorites</button>
+     <button type="button" id="favorites" class="btn btn-success buttonCss">Add to My Favorites</button>
     </div>
    
 
