@@ -109,7 +109,14 @@
 
     <div class="col-sm-12" style="text-align:center">
      <button type="button" class="btn btn-success buttonCss" onclick="WriteToFile( '<%= JSON.stringify(gene) %>' , '<%= JSON.stringify(gene2) %>')"> Download</button>
-     <button type="button" id="favorites" class="btn btn-success buttonCss">Add to My Favorites</button>
+     <button type="button" id="favorites" class="btn btn-success buttonCss"
+     <% if (user) { %> 
+      onclick="addFavorites('<%= JSON.stringify(user.local.email) %>')"
+    <% }
+     else { %>
+     onclick="addFavorites('null')"
+    <% } %>
+     >Add to My Favorites </button>
     </div>
    
 
