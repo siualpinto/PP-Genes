@@ -32,6 +32,47 @@ module.exports = function(app, passport,http) {
         });
     });
 
+    app.get('/addFavorites/:id/:specie', isLoggedIn, function(req, res) {
+
+        var User            = require('../app/models/user');
+
+        var email = req.user.local.email;
+        var favoritesnew = req.user.local.favorites;
+        var specie = req.params.specie.split(":");
+        var id = req.params.id.split(":");
+
+        var newfavorite = specie[1] + ":" + id[1];
+
+        if(isInArray(newfavorite, favoritesnew)){
+            res.redirect('/search/:' + specie[1] + "/:" + id[1]);
+            return;
+        }
+
+        favoritesnew.push(newfavorite);
+
+        var query = {'local.email':email};
+
+        User.findOne(query, function (err, user) {
+            user.local.email = req.user.local.email;
+            user.local.name = req.user.local.name;
+            user.local.institution = req.user.local.institution;
+            user.local.password = req.user.local.password;
+            user.local.favorites = favoritesnew;
+
+            user.save(function (err) {
+                if(err) {
+                    res.render('index.ejs');
+                    return;
+                }
+                else{
+                    res.redirect('/search/:' + specie[1] + "/:" + id[1]);
+                    return;
+                }
+            });
+        });
+
+    });
+
     //route da listagem geral do website com todos os 4000 e tal dados contendo especie, tipologia etc etc
 
     app.get('/general', function(req, res) {
@@ -121,46 +162,46 @@ module.exports = function(app, passport,http) {
 
     app.get('/disease/:iddisease', function(req, res) {
 
-     var iddisease = req.params.iddisease;
-     var trya = iddisease.split(":");
+       var iddisease = req.params.iddisease;
+       var trya = iddisease.split(":");
 
-     var options = {
-      host: 'rest.kegg.jp',
-      path: '/get/' + trya[1] +":"+trya[2],
-      headers: {
-        'Content-Type': 'application/json'
-    }
-};
-
-var request = http.get(options, function (response) {
-
-    var data = '';
-
-    response.setEncoding('utf8');
-
-    response.on('data', function (chunk) {
-        data += chunk;
-    }); 
-
-    response.on("end", function (err) {
-
-        if(err || data == null || data == ''){
-            res.render('index.ejs');
-            return;
+       var options = {
+          host: 'rest.kegg.jp',
+          path: '/get/' + trya[1] +":"+trya[2],
+          headers: {
+            'Content-Type': 'application/json'
         }
+        };
+
+        var request = http.get(options, function (response) {
+
+        var data = '';
+
+        response.setEncoding('utf8');
+
+        response.on('data', function (chunk) {
+            data += chunk;
+        }); 
+
+        response.on("end", function (err) {
+
+            if(err || data == null || data == ''){
+                res.render('index.ejs');
+                return;
+            }
 
 
-        var lines = data.split("\n");
-        var entries = [];
-        var content = [];
+            var lines = data.split("\n");
+            var entries = [];
+            var content = [];
 
-        for(var i = 0;i < lines.length;i++){
-            if(lines[i].substring(0,1) != ' ')
-                entries.push(lines[i].substring(0,12));
-        }
+            for(var i = 0;i < lines.length;i++){
+                if(lines[i].substring(0,1) != ' ')
+                    entries.push(lines[i].substring(0,12));
+            }
 
 
-        var copy2 = data.replace(/(\r\n|\n|\r)/gm,"");
+            var copy2 = data.replace(/(\r\n|\n|\r)/gm,"");
                     //console.log(copy);
                     for(var j = 0;j < entries.length-2;j++){
                         var one = copy2.match(entries[j].trim()+"(.*?)"+entries[j+1].trim());
@@ -174,41 +215,41 @@ var request = http.get(options, function (response) {
                     });
                 });
 
-});  
+    });  
 });
 
     //route para a lista dos genes de uma especie (ex:hsa) vinda da lista geral
 
     app.get('/specific/:tipology', function(req, res) {
 
-     var tipology = req.params.tipology;
-     var trya = tipology.split(":");
-     console.log(trya[1]);
+       var tipology = req.params.tipology;
+       var trya = tipology.split(":");
+       console.log(trya[1]);
 
-     var options = {
-      host: 'rest.kegg.jp',
-      path: '/list/' + trya[1],
-      headers: {
-        'Content-Type': 'application/json'
-    }
-};
-
-var request = http.get(options, function (response) {
-
-    var data = '';
-
-    response.setEncoding('utf8');
-
-    response.on('data', function (chunk) {
-        data += chunk;
-    }); 
-
-    response.on("end", function (err) {
-
-        if(err || data == null || data == ''){
-            res.render('index.ejs');
-            return;
+       var options = {
+          host: 'rest.kegg.jp',
+          path: '/list/' + trya[1],
+          headers: {
+            'Content-Type': 'application/json'
         }
+        };
+
+        var request = http.get(options, function (response) {
+
+        var data = '';
+
+        response.setEncoding('utf8');
+
+        response.on('data', function (chunk) {
+            data += chunk;
+        }); 
+
+        response.on("end", function (err) {
+
+            if(err || data == null || data == ''){
+                res.render('index.ejs');
+                return;
+            }
 
                     //console.log(data);          
 
@@ -221,41 +262,41 @@ var request = http.get(options, function (response) {
                 }); 
 
 
-}); 
+    }); 
 });
 
     //route do pathway de uma especie - pathway dos homo sapiens (hsa) por exemplo
 
     app.get('/pathway/:tipology', function(req, res) {
 
-     var tipology = req.params.tipology;
-     var trya = tipology.split(":");
-     console.log(trya[1]);
+       var tipology = req.params.tipology;
+       var trya = tipology.split(":");
+       console.log(trya[1]);
 
-     var options = {
-      host: 'rest.kegg.jp',
-      path: '/list/pathway/' + trya[1],
-      headers: {
-        'Content-Type': 'application/json'
-    }
-};
-
-var request = http.get(options, function (response) {
-
-    var data = '';
-
-    response.setEncoding('utf8');
-
-    response.on('data', function (chunk) {
-        data += chunk;
-    }); 
-
-    response.on("end", function (err) {
-
-        if(err || data == null || data == ''){
-            res.render('index.ejs');
-            return;
+       var options = {
+          host: 'rest.kegg.jp',
+          path: '/list/pathway/' + trya[1],
+          headers: {
+            'Content-Type': 'application/json'
         }
+        };
+
+        var request = http.get(options, function (response) {
+
+        var data = '';
+
+        response.setEncoding('utf8');
+
+        response.on('data', function (chunk) {
+            data += chunk;
+        }); 
+
+        response.on("end", function (err) {
+
+            if(err || data == null || data == ''){
+                res.render('index.ejs');
+                return;
+            }
 
                     //console.log(data);          
 
@@ -268,7 +309,7 @@ var request = http.get(options, function (response) {
                 }); 
 
 
-}); 
+    }); 
 });
 
     //route da lista de genes de um pathway
@@ -283,9 +324,9 @@ var request = http.get(options, function (response) {
           headers: {
             'Content-Type': 'application/json'
         }
-    };
+        };
 
-    var request = http.get(options, function (response) {
+        var request = http.get(options, function (response) {
 
         var data = '';
 
@@ -333,16 +374,15 @@ var request = http.get(options, function (response) {
         var first = params.split(":");
         var second = params2.split(":");
 
-
         var options = {
           host: 'rest.kegg.jp',
           path: '/get/' + first[1] + ":" + second[1],
           headers: {
             'Content-Type': 'application/json'
         }
-    };
+        };
 
-    var request = http.get(options, function (response) {
+        var request = http.get(options, function (response) {
 
         var data = '';
 
@@ -377,9 +417,6 @@ var request = http.get(options, function (response) {
                         //console.log(one);
                     }
 
-
-
-
                     var options2 = {
                       host: 'rest.kegg.jp',
                       path: '/conv/ncbi-geneid/' + first[1] + ":" + second[1],
@@ -401,14 +438,17 @@ var request = http.get(options, function (response) {
                     response2.on("end", function (err) {
 
                         data2 = data2.replace(/(\r\n|\n|\r)/gm,"");
-
                         if(err || !data2 || 0 === data2.length || data2 == ''){
                             res.render('search.ejs', {
-                             gene : entries,
-                             gene2 : content
-                         });
-                            return;
+                               gene : entries,
+                               gene2 : content,
+                               user : req.user,
+                               specie: first[1],
+                               id: second[1]
+                           });
+                        return;
                         }
+
                         var id = data2.match("ncbi-geneid(.*)");
 
                         var options3 = {
@@ -426,25 +466,18 @@ var request = http.get(options, function (response) {
                             data += chunk;
                         }); 
 
-                        response3.on("end", function (err) {   
-                            if(isLoggedInBoolean(req))                             
-                                if(err || data == null || data == ''){
-                                    res.render('search.ejs', {
-                                        gene : entries,
-                                        gene2 : content,                                   
-                                        user : req.user
-                                    });
-                                    return;
-                                }
-                                else
-                                    if(err || data == null || data == ''){
-                                        res.render('search.ejs', {
-                                            gene : entries,
-                                            gene2 : content,                                   
-                                            user : false
-                                        });
-                                        return;
-                                    }
+                        response3.on("end", function (err) {                              
+                            if(err || data == null || data == ''){
+                                res.render('search.ejs', {
+                                    gene : entries,
+                                    gene2 : content,                                   
+                                    user : req.user,
+                                    specie: first[1],
+                                    id: second[1]
+
+                                });
+                                return;
+                            }
 
 
                                     data = data.replace(/(\r\n|\n|\r)/gm,"");             
@@ -606,31 +639,15 @@ var request = http.get(options, function (response) {
                                     else{
                                         outputNCBI.TaxID='Information N/a';
                                     }
-                                    if(isLoggedInBoolean(req)){
-
                                         res.render('search.ejs', {
 
                                             gene : entries,
                                             gene2 : content,
-                                        
-                                    geneNCBI: outputNCBI, // get the user out of session and pass to template
-                                    user : req.user
-                                });
-                                    }
-                                    else
-                                    {
-                                        res.render('search.ejs', {
-
-                                            gene : entries,
-                                            gene2 : content,
-
-                                    geneNCBI: outputNCBI, // get the user out of session and pass to template
-                                    user : false
-                                });
-                                    }
-
-
-
+                                            geneNCBI: outputNCBI, // get the user out of session and pass to template
+                                            user : req.user,
+                                           specie: first[1],
+                                           id: second[1]
+                                        });
                                 });
 
 });
@@ -657,9 +674,9 @@ var request = http.get(options, function (response) {
           headers: {
             'Content-Type': 'application/json'
         }
-    };
+         };
 
-    var request = http.get(options, function (response) {
+        var request = http.get(options, function (response) {
 
         var data = '';
 
@@ -739,9 +756,9 @@ var request = http.get(options, function (response) {
           headers: {
             'Content-Type': 'application/json'
         }
-    };
+        };
 
-    var request = http.get(options, function (response) {
+        var request = http.get(options, function (response) {
 
         var data = '';
 
@@ -837,6 +854,6 @@ function isInArray(value, array) {
 }
 
 function matchExact(r, str) {
-   var match = str.match(r);
-   return match != null && str == match[0];
+ var match = str.match(r);
+ return match != null && str == match[0];
 }
