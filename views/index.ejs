@@ -3,6 +3,7 @@
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="/styles/index.css">
 </head>
 <body>
 <%- include /partials/header.ejs %>
@@ -11,10 +12,20 @@
     <div class="jumbotron text-center" >
         <h1><span class="fa fa-search"></span> Gene Search Tool</h1>
 
-        <p>Login or Register to access our website:</p>
+        <%if (typeof user != 'undefined') { %>
 
-        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
-        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup</a>
+	        <p style="font-weight: bold;">Hi <%= user.local.name %>!</p>
+	        <a href="/logout" class="btn btn-default"><span class="fa fa-user"></span>Logout</a><br>
+
+        <% } else { %>
+
+        	<p style="font-weight: bold;">Login or Register to access our website:</p>
+
+	        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
+	        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup</a><br>
+
+        <% } %>
+
     </div>
 
 </div>

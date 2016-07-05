@@ -1,7 +1,22 @@
 module.exports = function(app, passport,http) {
 
     app.get('/', function(req, res) {
-        res.render('index.ejs'); // load the index.ejs file
+        res.render('index.ejs', {
+            user : req.user,
+        }); // load the index.ejs file
+    });
+
+    app.get('/logout', function (req, res) {
+      req.session.destroy(function(err){  
+        if(err){  
+            console.log(err);  
+        }  
+        else  
+        {  
+            res.render('index.ejs'); // load the index.ejs file
+        }  
+    });  
+      
     });
 
     app.get('/login', function(req, res) {
