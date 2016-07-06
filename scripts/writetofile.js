@@ -17,7 +17,7 @@ function WriteToFile(ids, content){
 
 	for(var i =0; i< ids.length-2 ; i++) {
 		//console.log("1 : " + ids[i] + "  2:  " + content[i]);
-		var entry = "kegg_"+ids[i].trim().toLowerCase()+"("+namefile+", "+content[i].replace(/^\s+|\s+$/g,"")+").";
+		var entry = "kegg_"+ids[i].trim().toLowerCase()+"("+namefile+", '"+content[i].replace(/^\s+|\s+$/g,"")+"').";
 		arrayData.push(entry);
 	}
 
