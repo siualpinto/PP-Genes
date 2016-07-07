@@ -3,7 +3,8 @@
 <html>
 <head>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">    
+    <script src="/scripts/writetofile.js"></script>
 </head>
 <body>
 <%- include /partials/header.ejs %>
@@ -16,9 +17,16 @@
                 <strong><%=ids[i]%></strong>: <%= disease[i]  %><br>
             <% } %>
         </p>
-        </div>
+        </div>    
+
     </div>
 </div>
+
+
+<div class="col-sm-12" style="text-align:center">
+ <button type="button" class="btn btn-success buttonCss" onclick="WriteDisease( '<%= JSON.stringify(disease) %>')"> Download Disease</button>
+</div>
+
 </body>
 
 </html>
