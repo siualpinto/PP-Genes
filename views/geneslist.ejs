@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.12.3.js"></script>
     <link rel="stylesheet" href="/styles/general.css">
-    <script src="/scripts/writetofile.js"></script>
+    <script src="/scripts/writetofile.js"></script>    
+    <script src="/scripts/FileSaver.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 </head>
@@ -62,7 +63,7 @@
         <thead>
             <tr>
                 <th class="text-center">Genes For Pathway <%= JSON.parse(JSON.stringify(data[0].split("\t")))[0] %> <br>
-                    <button type="button" class="btn btn-success buttonCss" onclick="WritePathway( '<%= JSON.stringify(data) %>', '<%= JSON.stringify(data[0].split("\t")) %>')"> Download PathWay</button>
+                    <button type="button" class="btn btn-success buttonCss" onclick="WritePathway( '<%= data %>', '<%= JSON.stringify(data[0].split("\t")) %>')"> Download PathWay</button>
                 </th>
             </tr>
         </thead>

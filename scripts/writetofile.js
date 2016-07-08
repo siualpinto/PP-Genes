@@ -4,6 +4,7 @@
  * @param  string  filepath   Path to file on hard drive
  * @param  sring   output     Data to be written
  */
+
 function WriteToFile(ids, content){ 
 	
 	ids = JSON.parse(ids);
@@ -136,23 +137,25 @@ function WriteToFileNCBI(name, content){
 	
 }
 
-function WriteDisease(content) {
+function WriteDisease(content, ids) {
 
 	var disease = JSON.parse(content);
+	ids = JSON.parse(ids);
 	
-	var namefile = content[0];
+	var namefile = disease[0];
 	namefile = namefile.replace(/^\s+|\s+$/g,"");
 	namefile = namefile.substr(0,namefile.indexOf(' '));
-
+	console.log("nam " + namefile);
 	var arrayData = [];
 
 	for(var i =0; i< disease.length-2 ; i++) {
-		var entry = "disease_"+disease[i].trim().toLowerCase()+"("+namefile+", '"+disease[i].replace(/^\s+|\s+$/g,"")+"').";
+		var entry = "disease_"+ids[i].trim().toLowerCase()+"("+namefile+", '"+disease[i].replace(/'/g, "\\'")+"').";
+
 		arrayData.push(entry);
 	}
 
-  	var blob = new Blob([arrayData.join('\r\n')], {type: "text/plain;charset=utf-8"});
- 	saveAs(blob, "gene_"+namefile+".pl");
+    var blob = new Blob([arrayData.join('\r\n')], {type: "text/plain;charset=utf-8"});
+ 	saveAs(blob, "disease_"+namefile+".pl");
 
 }
 
@@ -162,29 +165,20 @@ function WritePathway(content, namefile) {
 	var namePath = namefileSplit[1];
 	var namePathWay = namePath.split(",");
 	var namepathway = namePathWay[0].substr(0,namePathWay[0].length-1);
-	//console.log("asafa  " + content + " " );
+	
+	//console.log("asafa  " + namepathway + "  --  " + JSON.parse(JSON.stringify(content[i].split("\t")))[1];
+
 	var arrayData = [];
-	/*var array = [];
-	for(var i =0; i< content.length-1 ; i++) {
+	
+	for(var i=0; i < content.length-1; i++) { 
+		var entry = "pathway_"+i+"("+namepathway+", '"+ "nhe" +"').";
 
-		if(content[i] != ",") {
-			
-			var content2 = array[0].split(namepathway);
-			var content3 = content2.split(":");
-			var contentfinal = content3[1];
-
-			var entry = "pathway_"+i+"("+namepathway+", '"+JSON.parse(JSON.stringify(content[i].split("\t")))[1]+"').";
-
-			console.log("AQII  " + contentfinal + " ");
-			arrayData.push(entry);
-			array = [];
-		} else {
-			array.push(content[i]);
-		}
-
-	}*/
+		arrayData.push(entry);
+		
+	}
+	
 
   	var blob = new Blob([arrayData.join('\r\n')], {type: "text/plain;charset=utf-8"});
  	saveAs(blob, "pathway_"+namepathway+".pl");
 
-}
+} 
