@@ -138,7 +138,6 @@ function WriteToFileNCBI(name, content){
 
 function WriteDisease(content) {
 
-
 	var disease = JSON.parse(content);
 	
 	var namefile = content[0];
