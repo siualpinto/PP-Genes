@@ -40,9 +40,6 @@ function WriteToFileNCBI(name, content){
 	
 	var arrayData = [];
 
-	var entry = "ncbi_ole"+"("+name+", '"+geneNCBI.Name.replace(/^\s+|\s+$/g,"")+"').";
-	arrayData.push(entry);
-
 	if (geneNCBI.DbBuild != null) { 
         var entry = "ncbi_dbbuild"+"("+name+", '"+geneNCBI.DbBuild.replace(/^\s+|\s+$/g,"")+"').";
 		arrayData.push(entry);
@@ -169,9 +166,9 @@ function WritePathway(content, namefile) {
 	//console.log("asafa  " + namepathway + "  --  " + JSON.parse(JSON.stringify(content[i].split("\t")))[1];
 
 	var arrayData = [];
-	
-	for(var i=0; i < content.length-1; i++) { 
-		var entry = "pathway_"+i+"("+namepathway+", '"+ "nhe" +"').";
+	content = JSON.parse(content);
+	for(var i=0; i < content.length; i++) { 
+		var entry = "pathway_"+i+"("+namepathway+", '"+ content[i] +"').";
 
 		arrayData.push(entry);
 		

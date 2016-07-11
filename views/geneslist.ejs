@@ -67,22 +67,23 @@
             </tr>
         </thead>
         <tbody>
+        <% var all = [] %>
         <% for(var i=0; i < data.length-1; i++) { %>
            <tr>
              <td class="text-center">
                 <a href="#" class="idgene">
                <%= JSON.parse(JSON.stringify(data[i].split("\t")))[1] %>
+               <% all.push(JSON.parse(JSON.stringify(data[i].split("\t")))[1]) %>
                </a>
              </td>
            </tr>
         <% } %>
         </tbody>
-         
+         <div class="col-sm-12" style="text-align:center">
+    <button type="button" class="btn btn-success buttonCss" onclick="WritePathway( '<%= JSON.stringify(all) %>', '<%= JSON.stringify(data[0].split("\t")) %>')"> Download PathWay</button>
+    </div>
         <% } %>
     </table>
-    <div class="col-sm-12" style="text-align:center">
-    <button type="button" class="btn btn-success buttonCss" onclick="WritePathway( '<%= data %>', '<%= JSON.stringify(data[0].split("\t")) %>')"> Download PathWay</button>
-    </div>
 <script>
 
 window.addEventListener("load", function(){

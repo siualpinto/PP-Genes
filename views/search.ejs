@@ -107,7 +107,7 @@
     </div>
 
     <div class="col-sm-12" style="text-align:center">
-     <button type="button" class="btn btn-success buttonCss" onclick="WriteToFile( '<%= JSON.stringify(gene) %>' , '<%= JSON.stringify(gene2) %>')"> Download KEGG</button>
+     <button type="button" class="btn btn-success buttonCss" onclick="WriteToFile( '<%= JSON.stringify(gene) %>' , '<%= JSON.stringify(gene2).replace(/'/g, "\\'") %>')"> Download KEGG</button>
 
      <%if (typeof user != 'undefined') { %> 
      <a href="/addFavorites/:<%= id %>/:<%= specie %>" class="btn btn-primary buttonCss"> Add to Favorites</a>
@@ -115,7 +115,7 @@
 
      <%if (typeof geneNCBI != 'undefined') { %> 
           <%if (geneNCBI.Name != 'undefined') { %> 
-         <button type="button" class="btn btn-success buttonCss" onclick="WriteToFileNCBI('<%= JSON.stringify(geneNCBI.Name) %>', '<%= JSON.stringify(geneNCBI) %>')"> Download NCBI</button>
+         <button type="button" class="btn btn-success buttonCss" onclick="WriteToFileNCBI('<%= JSON.stringify(geneNCBI.Name) %>', '<%= JSON.stringify(geneNCBI).replace(/'/g, "\\'") %>')"> Download NCBI</button>
           <% } %>
     <% } %>
     </div>
