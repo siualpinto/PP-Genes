@@ -1,4 +1,4 @@
-
+db.species.insert(
 {
     id : ObjectId("575ef6a9a66112c00ab1e2d9"),
     fullname : "pon",
@@ -29893,4 +29893,4 @@
     id : ObjectId("575ef6aaa66112c00ab1f383"),
     fullname : "arg",
     sigla : "Archaeon GW2011_AR20"
-}
+})
